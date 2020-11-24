@@ -7,6 +7,7 @@ class Gameplay():
         self.game_end = False # permet de continuer le jeu tant que cette variable n'est pas True
         self.choose_nb_player() # demande du nombre de joueur
         self.player_creation() # création des joueurs en fct du nombre
+        self.game_turn() # lancement de la partie
         
     def choose_nb_player(self):
         # Définir un nombre de joueur
@@ -22,5 +23,23 @@ class Gameplay():
         # Donner le score actuel de tous les joueurs
         for player in self.players.values():
             print(player)
+
+    def game_turn(self):
+        # check si le jeu n'est pas terminé
+        if self.game_end != True:
+            # enchainement des tours du joueur 1 à 4
+            for i in range(0, len(self.players)):
+                # On définit le joueur dont c'est le tour
+                active_player = self.players[i+1]
+                print(f"{active_player.name}, c'est ton tour !")
+                active_player.turn = True
+                # Tant que joueur.turn est vrai le joueur va pouvoir jouer (tant qu'il ne fait pas d'erreur)
+                while active_player.turn == True:
+                    self.ask_question()
+                    active_player.turn = False
+            
+    # fonction pour poser une question
+    def ask_question(self):
+        pass
 
 jeu = Gameplay()
