@@ -41,5 +41,3 @@ class Gameplay():
     # fonction pour poser une question
     def ask_question(self):
         pass
-
-jeu = Gameplay()
