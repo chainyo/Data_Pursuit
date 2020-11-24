@@ -12,3 +12,5 @@
 - Affichage du score des joueurs
 - Définitions des thèmes et des camemberts
 - Système multi-joueurs
+
+*/!\ En construction*
