@@ -1,4 +1,4 @@
-from class_Player import Player
+from Class.class_Player import Player
 
 class Gameplay():
 
