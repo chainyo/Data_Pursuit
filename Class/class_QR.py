@@ -18,3 +18,11 @@ class Questions():
     #def compare_answer(self, answer):
     #    if str(answer.lower()) == self.answer:
     #        return True
+
+class Answer():
+
+    def __init__(self, ansid, qid, anslabel, ansval):
+        self.id = ansid
+        self.qid = qid
+        self.label = anslabel
+        self.value = ansval
