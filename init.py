@@ -5,4 +5,4 @@ from Class.class_Gameplay import Gameplay
 questions = Bdd.get_question()
 
 # Création de la partie
-game = Gameplay()
+game = Gameplay(questions)

@@ -1,11 +1,11 @@
 import mysql.connector
-from Class.class_QR import Questions
+from Class.class_QR import Questions, Answer
 
 class Bdd():
 
     @classmethod
     def connect(cls) :
-        cls.bdd = mysql.connector.connect(user='root', password='root', host='localhost', port= '8081', database='data_poursuit', raise_on_warnings=True)
+        cls.bdd = mysql.connector.connect(user='dbadmin', password='150k60BRO', host='localhost', port= '3306', database='data_poursuit', raise_on_warnings=True)
         cls.cursor = cls.bdd.cursor()
 
     @classmethod
@@ -36,11 +36,13 @@ class Bdd():
     def get_answer(cls, get_qid):
         cls.connect()
         id_question = get_qid
-        query = f"select libelle_reponse from reponses where id_question = '{id_question}' order by valeur_reponse desc"
+        query = f"select id_reponse, id_question, libelle_reponse, valeur_reponse from reponses where id_question = '{id_question}' order by valeur_reponse desc"
 
         cls.cursor.execute(query)
+        liste_reponse = []
         fetch = cls.cursor.fetchall()
         for row in fetch:
-            reponse = Reponse 
-
+            reponse = Answer(str(row[0]), str(row[1]), str(row[2]), str(row[3]))
+            liste_reponse.append(reponse)
         cls.close()
+        return liste_reponse
