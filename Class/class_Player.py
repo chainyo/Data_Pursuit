@@ -19,4 +19,4 @@ class Player():
     
     # Pour récupérer score du joueur
     def give_score(self):
-        return str(self.score)
+        print(f"{self.name} ton score est de: {self.score}")
