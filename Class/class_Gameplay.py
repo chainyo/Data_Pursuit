@@ -1,11 +1,9 @@
-from Class.class_Player import Player
-from Class.class_Bdd import Bdd
+from class_Player import Player
 
 class Gameplay():
 
-    def __init__(self, liquestions):
+    def __init__(self):
         # Initialisation du jeu
-        self.questions = liquestions # récupération de la liste des questions
         self.game_end = False # permet de continuer le jeu tant que cette variable n'est pas True
         self.choose_nb_player() # demande du nombre de joueur
         self.player_creation() # création des joueurs en fct du nombre
@@ -42,19 +40,6 @@ class Gameplay():
             
     # fonction pour poser une question
     def ask_question(self):
-        # fonction rand pour le choix de la question
-        print(self.questions[2])
-        reponses = self.get_question_answers(self.questions[2].id)
-        self.show_reponses(len(reponses))
+        pass
 
-    def get_question_answers(self, qid):
-        reponses = Bdd.get_answer(qid)
-        return reponses
-
-    def show_reponses(self, length):
-        if length == 3:
-            print("LOL 3 reponses")
-        elif length == 2:
-            print("LOL 2 reponses")
-        else :
-            print("LOL ecrit la réponse")
+jeu = Gameplay()

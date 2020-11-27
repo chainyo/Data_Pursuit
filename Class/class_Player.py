@@ -1,5 +1,5 @@
 # Classe joueur
-class Player():
+class Player:
 
     def __init__(self, name):
         # Définition des variables du joueur
@@ -20,3 +20,4 @@ class Player():
     # Pour récupérer score du joueur
     def give_score(self):
         return str(self.score)
+
