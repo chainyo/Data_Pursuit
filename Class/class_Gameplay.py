@@ -72,6 +72,9 @@ class Gameplay():
         rep = self.show_reponses(len(reponses), reponses)
         # comparaison de la valeur de la réponse
         sucess = self.rep_compare(rep, reponses)
+        # on retire la question de la liste des questions disponibles si la réponse est juste
+        if sucess == True:
+            self.remove_question(level)
         return sucess
 
     # fonction random question level 
@@ -106,7 +109,7 @@ class Gameplay():
     # fonction pour comparer la réponse
     def rep_compare(self, rep, li):
         for obj in li:
-            if obj.label == rep:
+            if obj.label.lower() == rep.lower():
                 if obj.value == str(1):
                     print("Bonne réponse !")
                     return True
@@ -115,3 +118,7 @@ class Gameplay():
             else:
                 print("Mauvaise réponse")
                 return False
+    
+    # fonction pour retirer une question bien répondue
+    def remove_question(self, lvl):
+        del self.questions[lvl][0]
