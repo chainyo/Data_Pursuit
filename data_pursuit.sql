@@ -119,7 +119,7 @@ INSERT INTO `reponses` (`id_reponse`, `id_question`, `libelle_reponse`, `valeur_
 (24, 11, 'variation', 0),
 (25, 11, 'linéaire', 0),
 (26, 11, 'corrélation', 1),
-(27, 12, '7', 1),
+(27, 12, '3', 1),
 (28, 13, '75%', 1),
 (29, 14, '10', 1),
 (30, 15, 'Vrai', 1),
