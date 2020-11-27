@@ -31,9 +31,9 @@ class Gameplay():
     def game_turn(self):
         # check si le jeu n'est pas terminé
         if self.game_end != True:
+            self.turn_cnt += 1
             # enchainement des tours du joueur 1 à 4
             for i in range(0, len(self.players)):
-                self.turn_cnt += 1
                 print(f"Début du tour n°{self.turn_cnt}")
                 # on définit le joueur dont c'est le tour
                 active_player = self.players[i+1]
