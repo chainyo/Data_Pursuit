@@ -43,18 +43,19 @@ class Gameplay():
     # fonction pour poser une question
     def ask_question(self):
         # fonction rand pour le choix de la question
-        print(self.questions[2])
-        reponses = self.get_question_answers(self.questions[2].id)
-        self.show_reponses(len(reponses))
+        print(self.questions[1])
+        reponses = self.get_question_answers(self.questions[1].id)
+        self.show_reponses(len(reponses), reponses)
 
     def get_question_answers(self, qid):
         reponses = Bdd.get_answer(qid)
         return reponses
 
-    def show_reponses(self, length):
+    def show_reponses(self, length, reponses):
         if length == 3:
-            print("LOL 3 reponses")
+            for i, rep in enumerate(reponses):
+                print(f"{i}. {rep}")
         elif length == 2:
-            print("LOL 2 reponses")
-        else :
-            print("LOL ecrit la réponse")
+            for rep in reponses:
+                print(f"{i}. {rep}")
+        input("Ta réponse: ")
