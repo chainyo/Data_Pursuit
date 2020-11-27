@@ -99,7 +99,7 @@ INSERT INTO `reponses` (`id_reponse`, `id_question`, `libelle_reponse`, `valeur_
 (4, 2, 'de Gauss', 1),
 (5, 2, 'Fisher', 0),
 (6, 2, 'de Shapiro-Wilk', 0),
-(7, 3, 'Dijsktra', 1),
+(7, 3, 'Dijkstra', 1),
 (8, 4, '7', 1),
 (9, 5, '10', 1),
 (10, 6, 'Vrai', 0),
