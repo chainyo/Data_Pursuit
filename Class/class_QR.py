@@ -26,3 +26,6 @@ class Answer():
         self.qid = qid
         self.label = anslabel
         self.value = ansval
+
+    def __str__(self):
+        return f"{self.label}"

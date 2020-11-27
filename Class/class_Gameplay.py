@@ -47,7 +47,7 @@ class Gameplay():
         question = self.random_question()
         print(question)
         reponses = self.get_question_answers(question.id)
-        self.show_reponses(len(reponses))
+        self.show_reponses(len(reponses), reponses)
         
     # fonction random question
     def random_question(self):
@@ -58,10 +58,11 @@ class Gameplay():
         reponses = Bdd.get_answer(qid)
         return reponses
 
-    def show_reponses(self, length):
+    def show_reponses(self, length, reponses):
         if length == 3:
-            print("LOL 3 reponses")
+            for i, rep in enumerate(reponses):
+                print(f"{i}. {rep}")
         elif length == 2:
-            print("LOL 2 reponses")
-        else :
-            print("LOL ecrit la réponse")
+            for rep in reponses:
+                print(f"{i}. {rep}")
+        input("Ta réponse: ")
