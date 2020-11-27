@@ -1,5 +1,6 @@
 from Class.class_Player import Player
 from Class.class_Bdd import Bdd
+import random
 
 class Gameplay():
 
@@ -39,13 +40,19 @@ class Gameplay():
                 while active_player.turn == True:
                     self.ask_question()
                     active_player.turn = False
-            
+    
     # fonction pour poser une question
     def ask_question(self):
         # fonction rand pour le choix de la question
-        print(self.questions[2])
-        reponses = self.get_question_answers(self.questions[2].id)
+        question = self.random_question()
+        print(question)
+        reponses = self.get_question_answers(question.id)
         self.show_reponses(len(reponses))
+        
+    # fonction random question
+    def random_question(self):
+        random.shuffle(self.questions)
+        return self.questions[0]
 
     def get_question_answers(self, qid):
         reponses = Bdd.get_answer(qid)
