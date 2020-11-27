@@ -59,8 +59,10 @@ class Gameplay():
     
     # fonction pour poser une question
     def ask_question(self):
-        # fonction rand pour le choix de la question
-        question = self.random_question()
+        # niveau de question random
+        level = self.random_level()
+        # question random en fonction du niveau
+        question = self.random_question(level)
         # affichage du label de la question au joueur
         print(question)
         # stockage des réponses possibles pour la question choisie
@@ -72,10 +74,15 @@ class Gameplay():
         sucess = self.rep_compare(rep, reponses)
         return sucess
 
+    # fonction random question level 
+    def random_level(self):
+        x = random.randrange(0, 3)
+        return x
+
     # fonction random question
-    def random_question(self):
-        random.shuffle(self.questions)
-        return self.questions[0]
+    def random_question(self, lvl):
+        random.shuffle(self.questions[lvl])
+        return self.questions[lvl][0]
 
     # fonction pour obtenir les réponses liées à la question (id)
     def get_question_answers(self, qid):
