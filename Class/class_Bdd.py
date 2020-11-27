@@ -18,11 +18,12 @@ class Bdd():
         cls.bdd.commit()
 
     @classmethod
-    def get_question(cls):
+    def get_question_1(cls):
         cls.connect()
         liste_question = []
         query = "select id_question, libelle_question, nom_theme, difficulte_question from questions \
-                join theme on theme.id_theme = questions.id_theme"
+                join theme on theme.id_theme = questions.id_theme \
+                where difficulte_question in 1"
         
         cls.cursor.execute(query)
         fetch = cls.cursor.fetchall()
@@ -48,12 +49,12 @@ class Bdd():
         return liste_reponse
 
     @classmethod
-    def get_question_med(cls):
+    def get_question_2(cls):
         cls.connect()
         liste_question = []
         query = "select id_question, libelle_question, nom_theme, difficulte_question from questions \
                 join theme on theme.id_theme = questions.id_theme\
-                where difficulte_question in (2,3) "               
+                where difficulte_question in 2"               
         
         cls.cursor.execute(query)
         fetch = cls.cursor.fetchall()
@@ -64,12 +65,12 @@ class Bdd():
         return liste_question
 
     @classmethod
-    def get_question_hard(cls):
+    def get_question_3(cls):
         cls.connect()
         liste_question = []
         query = "select id_question, libelle_question, nom_theme, difficulte_question from questions \
                 join theme on theme.id_theme = questions.id_theme\
-                where difficulte_question = 3 "               
+                where difficulte_question = 3"               
         
         cls.cursor.execute(query)
         fetch = cls.cursor.fetchall()
