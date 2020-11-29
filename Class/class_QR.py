@@ -29,3 +29,12 @@ class Answer():
 
     def __str__(self):
         return f"{self.label}"
+
+class Theme():
+
+    def __init__(self, tid, tlabel):
+        self.id = tid
+        self.label = tlabel
+    
+    def __str__(self):
+        return f"{self.label}"
