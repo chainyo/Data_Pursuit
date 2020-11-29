@@ -1,5 +1,5 @@
 import mysql.connector
-from Class.class_QR import Questions, Answer
+from Class.class_QR import Questions, Answer, Theme
 
 class Bdd():
 
@@ -79,3 +79,17 @@ class Bdd():
             liste_reponse.append(reponse)
         cls.close()
         return liste_reponse
+
+    @classmethod
+    def get_theme(cls):
+        cls.connect()
+        liste_theme = []
+        query = "select * from theme"
+
+        cls.cursor.execute(query)
+        fetch = cls.cursor.fetchall()
+        for row in fetch:
+            theme = Theme(str(row[0]), str(row[1]))
+            liste_theme.append(theme)
+        cls.close()
+        return liste_theme   
