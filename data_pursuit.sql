@@ -151,10 +151,10 @@ CREATE TABLE `theme` (
 --
 
 INSERT INTO `theme` (`id_theme`, `nom_theme`) VALUES
-(1, 'data1'),
-(2, 'data2'),
-(3, 'data3'),
-(4, 'data4'),
+(1, 'Big Data'),
+(2, 'IA'),
+(3, 'Ethique'),
+(4, 'Python'),
 (5, 'Mathematiques');
 
 --
