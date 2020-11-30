@@ -1,10 +1,14 @@
+from tkinter import Label
+
 # Classe joueur
 class Player():
 
-    def __init__(self, name):
+    def __init__(self, name, color):
         # Définition des variables du joueur
         # Son nom
         self.name = name
+        # Couleur du joueur
+        self.color = color
         # Variable qui permet de dire si c'est son tour ou non
         self.turn = False
         # Compteur de bonnes réponses
@@ -14,6 +18,8 @@ class Player():
         # Thèmes validés
         self.valid = set()
         self.valid_formatting = ""
+        # Position sur le plateau de jeu
+        self.position = (0, 0)
     
     def __str__(self):
         return f"{self.name} à pour le moment {self.cheese['cheese_cnt']} camemberts."
