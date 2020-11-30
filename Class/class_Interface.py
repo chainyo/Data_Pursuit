@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import font as tkfont
 import random
-
 from Class.class_Bdd import Bdd
 from Class.class_Gameplay import Gameplay
 
@@ -141,7 +140,7 @@ class Gameboard(tk.Frame):
         self.questions_frame = tk.Frame(self.game_frame, bg='green', height=650, width=620)
         self.questions_frame.grid(row=0, column=1, sticky='ns')
         # création de la grille
-        grid_cells = self.create_grid()
+        self.grid_cells = self.create_grid()
         #affichage du score
         self.score = tk.Label(self.dice_frame1, text='rien', font=("Helvetica", 20), bg='orange', fg='white', height = 5, width = 10, bd=None)
         self.score.grid(row=0, column=1) 
@@ -149,7 +148,13 @@ class Gameboard(tk.Frame):
         self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', height = 5, width = 15, bd=None, relief='flat')
         self.bouton.configure(command=lambda: self.roll())
         self.bouton.grid(row=0, column=0)
-        self.grid_cells = self.create_grid()
+        #affichage du score
+        self.score = tk.Label(self.dice_frame1, text='rien', font=("Helvetica", 20), bg='orange', fg='white', height = 5, width = 10, bd=None)
+        self.score.grid(row=0, column=1) 
+        #création du bouton
+        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', height = 5, width = 15, bd=None, relief='flat')
+        self.bouton.configure(command=lambda: self.roll())
+        self.bouton.grid(row=0, column=0)
 
     # définir les positions initiales des joueurs
     def define_position(self):
@@ -177,7 +182,7 @@ class Gameboard(tk.Frame):
     def clean_frame(self, player):
         for widget in self.grid_cells[player.position[0]][player.position[1]].winfo_children():
             widget.destroy()
-
+            
     # création de la grille
     def create_grid(self):
         self.full_grid = []
