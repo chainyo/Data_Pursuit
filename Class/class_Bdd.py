@@ -1,7 +1,7 @@
 import mysql.connector
 from Class.class_QR import Questions, Answer, Theme
 
-class Bdd():
+class Bdd:
 
     @classmethod
     def connect(cls) :
