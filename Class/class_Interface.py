@@ -10,9 +10,9 @@ class App(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
-        self.geometry("1500x800")
-        self.maxsize(1500, 800)
-        self.minsize(1500, 800)
+        self.geometry("1500x820")
+        self.maxsize(1500, 820)
+        self.minsize(1500, 820)
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
@@ -119,6 +119,17 @@ class Gameboard(tk.Frame):
         # zone pour l'affichage des joueurs et de leurs camemberts
         self.player_frame = tk.Frame(self, bg="red", height=150, width=1500)
         self.player_frame.grid(row=0)
+        #frame qui contient le dé et l'affichage
+        self.dice_frame1 = tk.Frame(self.player_frame, height=150, width=300, bg='yellow')
+        self.dice_frame1.grid(row=0, column=0, sticky='ns')
+        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='red')
+        self.dice_frame.grid(row=0, column=1, sticky='ns')
+        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='blue')
+        self.dice_frame.grid(row=0, column=2, sticky='ns')
+        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='green')
+        self.dice_frame.grid(row=0, column=3, sticky='ns')
+        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='pink')
+        self.dice_frame.grid(row=0, column=4, sticky='ns')
         # zone qui regroupe deux autres frames (Plateau & Questions)
         self.game_frame = tk.Frame(self, height=650, width=1500)
         self.game_frame.grid(row=1)
@@ -130,6 +141,13 @@ class Gameboard(tk.Frame):
         self.questions_frame.grid(row=0, column=1, sticky='ns')
         # création de la grille
         self.grid_cells = self.create_grid()
+        #affichage du score
+        self.score = tk.Label(self.dice_frame1, text='rien', font=("Helvetica", 20), bg='orange', fg='white', height = 5, width = 10, bd=None)
+        self.score.grid(row=0, column=1) 
+        #création du bouton
+        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', height = 5, width = 15, bd=None, relief='flat')
+        self.bouton.configure(command=lambda: self.roll())
+        self.bouton.grid(row=0, column=0)
 
     # définir les positions initiales des joueurs
     def define_position(self):
@@ -158,6 +176,7 @@ class Gameboard(tk.Frame):
         for widget in self.grid_cells[player.position[0]][player.position[1]].winfo_children():
             widget.destroy()
 
+
     # création de la grille
     def create_grid(self):
         self.full_grid = []
@@ -175,6 +194,11 @@ class Gameboard(tk.Frame):
                     color_cnt = 0
             self.full_grid.append(row)
         return self.full_grid
+    
+    # création du dé
+    def roll(self):
+        x = random.randint(1,6)
+        self.score.configure(text=x)
 
 class LoadGame(tk.Frame):
     
