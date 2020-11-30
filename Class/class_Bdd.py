@@ -5,7 +5,7 @@ class Bdd():
 
     @classmethod
     def connect(cls) :
-        cls.bdd = mysql.connector.connect(user='root', password='root', host='localhost', port= '8081', database='data_pursuit', raise_on_warnings=True)
+        cls.bdd = mysql.connector.connect(user='dbadmin', password='150k60BRO', host='localhost', port= '3306', database='data_pursuit', raise_on_warnings=True)
         cls.cursor = cls.bdd.cursor()
 
     @classmethod

@@ -47,8 +47,9 @@ class PlayerSelection(tk.Frame):
         self.controller = controller
         label = tk.Label(self, text="Player Selection", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
-        button = tk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("StartPage"))
+        button = tk.Button(self, text="Back", command=lambda: controller.show_frame("StartPage"))
+        button.pack()
+        button = tk.Button(self, text="Launch Game", command=lambda: controller.show_frame("Gameboard"))
         button.pack()
 
 class Gameboard(tk.Frame):
@@ -56,8 +57,14 @@ class Gameboard(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
+
+        # segmentation de la fenêtre en trois zone
+        player_frame = tk.Frame(self, bg="red", height=200, width=1500)
+        player_frame.grid(row=0)
+        gameboard_frame = tk.Frame(self, bg='blue', height=600, width=900)
+        gameboard_frame.grid(row=1, column=0)
+        questions_frame = tk.Frame(self, bg='green', height=600, width=600)
+        questions_frame.grid(row=1, column=1)
 
 class LoadGame(tk.Frame):
     

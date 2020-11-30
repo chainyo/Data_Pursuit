@@ -7,12 +7,12 @@ questions_1, questions_2, questions_3 = Bdd.get_question_1(), Bdd.get_question_2
 questions = (questions_1, questions_2, questions_3)
 
 # stockage des différents thèmes
-themes = ("Big Data", "IA", "Ethique", "Python", "Mathematiques")
+themes = Bdd.get_theme()
 
 # affichage de la fenêtre de l'appli
-#if __name__ == "__main__":
-#    app = App()
-#    app.mainloop()
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
 
 # création de la partie
-game = Gameplay(questions, themes)
+# game = Gameplay(questions, themes)
