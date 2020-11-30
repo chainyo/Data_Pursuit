@@ -51,12 +51,55 @@ class PlayerSelection(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+
+        #titre fenêtre
         label = tk.Label(self, text="Player Selection", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
-        button = tk.Button(self, text="Back", command=lambda: controller.show_frame("StartPage"))
-        button.pack()
-        button = tk.Button(self, text="Launch Game", command=lambda: controller.show_frame("Gameboard"))
-        button.pack()
+
+        #liste nombre de joueurs
+        OptionList = [
+        "1",
+        "2",
+        "3",
+        "4"
+        ] 
+
+        variable = tk.StringVar(self)
+        variable.set(OptionList[0])
+
+        label_joueur = tk.Label(self, text="Choisissez le nombre de joueurs", font=controller.title_font)
+        label_joueur.pack(side="top", fill="x", pady=10)
+
+
+        #menu déroulant
+        opt = tk.OptionMenu(self, variable, *OptionList)
+        opt.config(width=30, font=('Helvetica', 12))
+        opt.pack(side="top")
+
+        frame_entry = tk.Frame(self)
+        frame_entry.pack()
+
+        #fonction callback permettant de mettre à jour l'affichage via le choix sur le menu déroulant 
+        def callback(*args):
+            loulou = variable.get()
+            for widget in frame_entry.winfo_children():
+                widget.destroy()
+            def entry():
+                tk.Label(frame_entry, text=f"joueur {i+1} : ").grid(row = i+1, column = 0, pady=10)
+                tk.Entry(frame_entry, width=10, justify="center", font=("Helvetica", 10), bg="white", fg="black").grid(row = i+1, column = 1, pady=10)
+            for i in range(int(loulou)):
+                entry()
+
+        variable.trace("w", callback)
+
+        #bouton retour en arrière
+        button_back = tk.Button(self, text="Back", command=lambda: controller.show_frame("StartPage"))
+        button_back.pack()
+
+        # bouton pour lancer la partie
+        button_launch = tk.Button(self, text="Launch Game", command=lambda: controller.show_frame("Gameboard"))
+        button_launch.pack()
+
 
 class Gameboard(tk.Frame):
     
