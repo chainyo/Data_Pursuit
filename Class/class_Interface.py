@@ -59,12 +59,14 @@ class Gameboard(tk.Frame):
         self.controller = controller
 
         # segmentation de la fenêtre en trois zone
-        player_frame = tk.Frame(self, bg="red", height=200, width=1500)
+        player_frame = tk.Frame(self, bg="red", height=150, width=1500)
         player_frame.grid(row=0)
-        gameboard_frame = tk.Frame(self, bg='blue', height=600, width=900)
-        gameboard_frame.grid(row=1, column=0)
-        questions_frame = tk.Frame(self, bg='green', height=600, width=600)
-        questions_frame.grid(row=1, column=1)
+        game_frame = tk.Frame(self, height=650, width=1500)
+        game_frame.grid(row=1)
+        gameboard_frame = tk.Frame(game_frame, bg='blue', height=650, width=900)
+        gameboard_frame.grid(row=0, column=0, sticky='ns')
+        questions_frame = tk.Frame(game_frame, bg='green', height=650, width=600)
+        questions_frame.grid(row=0, column=1, sticky='ns')
 
 class LoadGame(tk.Frame):
     
