@@ -1,13 +1,11 @@
 import mysql.connector
 from Class.class_QR import Questions, Answer, Theme
 
-
 class Bdd:
 
     @classmethod
-    def connect(cls):
-        cls.bdd = mysql.connector.connect(user='root', password='root', host='localhost', port='3306',
-                                          database='data_pursuit', raise_on_warnings=True)
+    def connect(cls) :
+        cls.bdd = mysql.connector.connect(user='root', password='root', host='localhost', port= '8081', database='data_pursuit', raise_on_warnings=True)
         cls.cursor = cls.bdd.cursor()
 
     @classmethod
@@ -26,7 +24,7 @@ class Bdd:
         query = "select id_question, libelle_question, nom_theme, difficulte_question from questions \
                 join theme on theme.id_theme = questions.id_theme \
                 where difficulte_question = '1'"
-
+        
         cls.cursor.execute(query)
         fetch = cls.cursor.fetchall()
         for row in fetch:
@@ -41,8 +39,8 @@ class Bdd:
         liste_question = []
         query = "select id_question, libelle_question, nom_theme, difficulte_question from questions \
                 join theme on theme.id_theme = questions.id_theme\
-                where difficulte_question = '2'"
-
+                where difficulte_question = '2'"               
+        
         cls.cursor.execute(query)
         fetch = cls.cursor.fetchall()
         for row in fetch:
@@ -57,8 +55,8 @@ class Bdd:
         liste_question = []
         query = "select id_question, libelle_question, nom_theme, difficulte_question from questions \
                 join theme on theme.id_theme = questions.id_theme\
-                where difficulte_question = '3'"
-
+                where difficulte_question = '3'"               
+        
         cls.cursor.execute(query)
         fetch = cls.cursor.fetchall()
         for row in fetch:
@@ -83,15 +81,16 @@ class Bdd:
         return liste_reponse
 
     @classmethod
-    def get_theme(cls):
+    def get_theme(cls, licolors):
         cls.connect()
         liste_theme = []
         query = "select * from theme"
 
         cls.cursor.execute(query)
         fetch = cls.cursor.fetchall()
-        for row in fetch:
+        for i, row in enumerate(fetch):
             theme = Theme(str(row[0]), str(row[1]))
+            theme.color = licolors[i]
             liste_theme.append(theme)
         cls.close()
-        return liste_theme
+        return liste_theme   
