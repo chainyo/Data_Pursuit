@@ -67,8 +67,17 @@ class Gameboard(tk.Frame):
         player_frame.grid(row=0)
         gameboard_frame = tk.Frame(self, bg='blue', height=600, width=900)
         gameboard_frame.grid(row=1, column=0)
-        questions_frame = tk.Frame(self, bg='green', height=600, width=600)
+        questions_frame = tk.Frame(self, bg='green', height=600, width=600, command=)
         questions_frame.grid(row=1, column=1)
+        button1 = tk.Frame(self, text=print(), bg ="green",
+                            command=)
+        button2 = tk.Frame(self, text=print(), bg ="yellow",
+                            command=)
+        button3 = tk.Frame(self, text=print(), bg="red",
+                            command=)
+        button4 = tk.Frame(self, text=print(), bg="",
+                            command=)
+
 
 
 class LoadGame(tk.Frame):
