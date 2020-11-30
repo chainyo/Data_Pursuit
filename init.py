@@ -12,8 +12,7 @@ themes = Bdd.get_theme()
 
 # affichage de la fenêtre de l'appli
 if __name__ == "__main__":
-    app = App()
+    game = Gameplay(questions, themes)
+    app = App(game)
     app.mainloop()
 
-# création de la partie
-game = Gameplay(questions, themes)

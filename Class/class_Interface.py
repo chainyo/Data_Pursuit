@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import font as tkfont
 from init import *
+from Class.class_QR import *
+from Class.class_Gameplay import *
 
 
 class App(tk.Tk):
@@ -68,27 +70,30 @@ class Gameboard(tk.Frame):
         player_frame.grid(row=0)
         gameboard_frame = tk.Frame(self, bg='blue', height=600, width=900)
         gameboard_frame.grid(row=1, column=0)
-        questions_frame = tk.Frame(self, bg='green', height=600, width=600, command=str(questions))
+        questions_frame = tk.Frame(self, bg='green', height=600, width=600)
         questions_frame.grid(row=1, column=1)
-        if len(game.show_reponses()) > 1:
-            button_rep1 = tk.Frame(self, text=f"{game.show_reponses()}", bg="green",
-                                   command=game.rep_compare())
-            button_rep1.grid(row=4, column=2)
 
-            button_rep2 = tk.Frame(self, text=f"{game.show_reponses()}", bg="yellow",
-                                   command=game.rep_compare())
-            button_rep2.grid(row=6, column=1)
+        label_question = tk.Label(questions_frame, text=f"{Gameplay(questions, themes)}")
+        label_question.grid(row=1, column=1)
 
-            button_rep3 = tk.Frame(self, text=f"{game.show_reponses()}", bg="red",
-                                   command=game.rep_compare())
-            button_rep3.grid(row=8, column=2)
+        button_rep1 = tk.Frame(questions_frame, text=f"{Gameplay.show_reponses()}", bg="green"
+                               )
+        button_rep1.grid(row=3, column=2)
 
-            button_rep4 = tk.Frame(self, text=f"{game.show_reponses()}", bg="blue",
-                                   command=game.rep_compare())
-            button_rep4.grid(row=10, column=1)
-        else:
-            entry = tk.Entry(self, )
-            entry.grid(row=4, column=1)
+        button_rep2 = tk.Frame(questions_frame, text=f"{Gameplay.show_reponses()}", bg="yellow"
+                               )
+        button_rep2.grid(row=5, column=1)
+
+        button_rep3 = tk.Frame(questions_frame, text=f"{Gameplay.show_reponses()}", bg="red"
+                               )
+        button_rep3.grid(row=7, column=2)
+
+        button_rep4 = tk.Frame(questions_frame, text=f"{Gameplay.show_reponses()}", bg="blue"
+                               )
+        button_rep4.grid(row=9, column=1)
+
+        entry = tk.Entry()
+        entry.grid(row=4, column=1)
 
 
 class LoadGame(tk.Frame):
