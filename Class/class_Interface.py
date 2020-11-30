@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import font as tkfont
 import random
-from class_Gameplay import Gameplay
 
 colors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
 
@@ -57,22 +56,16 @@ class PlayerSelection(tk.Frame):
         label.pack(side="top", fill="x", pady=10)
 
         #liste nombre de joueurs
-        OptionList = [
-        "1",
-        "2",
-        "3",
-        "4"
-        ] 
+        OptionList = ["1", "2", "3", "4"] 
 
-        variable = tk.StringVar(self)
-        variable.set(OptionList[0])
+        self.variable = tk.StringVar(self)
+        self.variable.set(OptionList[0])
 
         label_joueur = tk.Label(self, text="Choisissez le nombre de joueurs", font=controller.title_font)
         label_joueur.pack(side="top", fill="x", pady=10)
 
-
         #menu déroulant
-        opt = tk.OptionMenu(self, variable, *OptionList)
+        opt = tk.OptionMenu(self, self.variable, *OptionList)
         opt.config(width=30, font=('Helvetica', 12))
         opt.pack(side="top")
 
@@ -81,7 +74,7 @@ class PlayerSelection(tk.Frame):
 
         #fonction callback permettant de mettre à jour l'affichage via le choix sur le menu déroulant 
         def callback(*args):
-            loulou = variable.get()
+            loulou = self.variable.get()
             for widget in frame_entry.winfo_children():
                 widget.destroy()
             def entry():
@@ -90,16 +83,15 @@ class PlayerSelection(tk.Frame):
             for i in range(int(loulou)):
                 entry()
 
-        variable.trace("w", callback)
+        self.variable.trace("w", callback)
 
         #bouton retour en arrière
         button_back = tk.Button(self, text="Back", command=lambda: controller.show_frame("StartPage"))
         button_back.pack()
 
         # bouton pour lancer la partie
-        button_launch = tk.Button(self, text="Launch Game", command=lambda: controller.show_frame("Gameboard"))
+        button_launch = tk.Button(self, text="Launch Game", command=lambda: [controller.show_frame("Gameboard"), Gameplay.choose_nb_player(self.variable)])
         button_launch.pack()
-
 
 class Gameboard(tk.Frame):
     

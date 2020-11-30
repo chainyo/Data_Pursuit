@@ -20,9 +20,10 @@ class Gameplay:
         #self.set_cheese_score()  # attribution des camemberts vides à chaque joueur
         #self.game_turn()  # lancement de la partie
 
-    def choose_nb_player(self):
+    def choose_nb_player(self, num):
         # définir un nombre de joueur
-        self.nb_player = int(input("Choisissez un nombre de joueur: "))
+        self.nb_player = int(num)
+        print(self.nb_player)
 
     def player_creation(self):
         # création des joueurs en fonction du nombre, stockage dans un dictionnaire {id : objet joueur}
