@@ -15,4 +15,4 @@ if __name__ == "__main__":
     app.mainloop()
 
 # création de la partie
-game = Gameplay(questions, themes)
+#game = Gameplay(questions, themes)
