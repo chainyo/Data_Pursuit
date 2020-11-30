@@ -10,7 +10,7 @@ class Questions():
         # le niveau de difficulté
         self.level = qlevel
     
-    # Permer en utilisant print d'avoir un affichage console du thème et de l'énoncé de la question
+    # Permet en utilisant print d'avoir un affichage console du thème et de l'énoncé de la question
     def __str__(self):
         return f"{self.theme}: {self.label} ?"
 
@@ -35,6 +35,7 @@ class Theme():
     def __init__(self, tid, tlabel):
         self.id = tid
         self.label = tlabel
+        self.color = ''
     
     def __str__(self):
         return f"{self.label}"

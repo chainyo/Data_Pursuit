@@ -1,11 +1,17 @@
 import tkinter as tk
 from tkinter import font as tkfont
+import random
+from class_Gameplay import Gameplay
+
+colors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
 
 class App(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.geometry("1500x800")
+        self.maxsize(1500, 800)
+        self.minsize(1500, 800)
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
@@ -59,14 +65,39 @@ class Gameboard(tk.Frame):
         self.controller = controller
 
         # segmentation de la fenêtre en trois zone
-        player_frame = tk.Frame(self, bg="red", height=150, width=1500)
-        player_frame.grid(row=0)
-        game_frame = tk.Frame(self, height=650, width=1500)
-        game_frame.grid(row=1)
-        gameboard_frame = tk.Frame(game_frame, bg='blue', height=650, width=900)
-        gameboard_frame.grid(row=0, column=0, sticky='ns')
-        questions_frame = tk.Frame(game_frame, bg='green', height=650, width=600)
-        questions_frame.grid(row=0, column=1, sticky='ns')
+        # zone pour l'affichage des joueurs et de leurs camemberts
+        self.player_frame = tk.Frame(self, bg="red", height=150, width=1500)
+        self.player_frame.grid(row=0)
+        # zone qui regroupe deux autres frames (Plateau & Questions)
+        self.game_frame = tk.Frame(self, height=650, width=1500)
+        self.game_frame.grid(row=1)
+        # frame qui contient le plateau de jeu
+        self.gameboard_frame = tk.Frame(self.game_frame, height=650, width=880)
+        self.gameboard_frame.grid(row=0, column=0, sticky='ns')
+        # frame qui contient les questions et choix de réponses
+        self.questions_frame = tk.Frame(self.game_frame, bg='green', height=650, width=620)
+        self.questions_frame.grid(row=0, column=1, sticky='ns')
+        # création de la grille
+        grid_cells = self.create_grid()
+
+    # création de la grille
+    def create_grid(self):
+        self.full_grid = {}
+        color_cnt = 0
+        for i in range(0, 11):
+            row = set()
+            for j in range(0, 11):
+                cell = tk.Frame(self.gameboard_frame, height=59, width=80, bg='white', borderwidth=1, relief="solid")
+                if i == 0 or i == 10 or j == 0 or j == 10:
+                    cell.configure(bg=colors[color_cnt])
+                    color_cnt += 1
+                cell.grid(row=i, column=j)
+                row.add(cell)
+                if color_cnt > 4:
+                    color_cnt = 0
+            self.full_grid[i] = row
+        return self.full_grid
+
 
 class LoadGame(tk.Frame):
     
