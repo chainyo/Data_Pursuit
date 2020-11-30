@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import font as tkfont
 
+
 class App(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -27,6 +28,7 @@ class App(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -40,8 +42,9 @@ class StartPage(tk.Frame):
         button_new.pack()
         button_load.pack()
 
+
 class PlayerSelection(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -52,8 +55,9 @@ class PlayerSelection(tk.Frame):
         button = tk.Button(self, text="Launch Game", command=lambda: controller.show_frame("Gameboard"))
         button.pack()
 
+
 class Gameboard(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -66,13 +70,14 @@ class Gameboard(tk.Frame):
         questions_frame = tk.Frame(self, bg='green', height=600, width=600)
         questions_frame.grid(row=1, column=1)
 
+
 class LoadGame(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         label = tk.Label(self, text="Choose a game to load", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
         button = tk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("StartPage"))
+                           command=lambda: controller.show_frame("StartPage"))
         button.pack()
