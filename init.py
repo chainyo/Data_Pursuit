@@ -1,6 +1,5 @@
 from Class.class_Bdd import Bdd
 from Class.class_Gameplay import Gameplay
-from Class.class_Interface import App
 
 # stockage des données
 questions_1, questions_2, questions_3 = Bdd.get_question_1(), Bdd.get_question_2(), Bdd.get_question_3()
@@ -15,4 +14,4 @@ if __name__ == "__main__":
     app.mainloop()
 
 # création de la partie
-# game = Gameplay(questions, themes)
+game = Gameplay(questions, themes)

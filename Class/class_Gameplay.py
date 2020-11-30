@@ -2,19 +2,20 @@ from Class.class_Player import Player
 from Class.class_Bdd import Bdd
 import random
 
-class Gameplay():
+
+class Gameplay:
 
     def __init__(self, liquestions, lithemes):
         # initialisation du jeu
-        self.questions = liquestions # récupération de la liste des questions
-        self.themes = lithemes # récupération des différents thèmes
-        self.game_end = False # permet de continuer le jeu tant que cette variable n'est pas True
-        self.choose_nb_player() # demande du nombre de joueur
-        self.player_creation() # création des joueurs en fct du nombre
-        self.set_cheese_score() # attribution des camemberts vides à chaque joueur
-        self.turn_cnt = 0 # compteur de tour de jeu
-        self.game_turn() # lancement de la partie
-        
+        self.questions = liquestions  # récupération de la liste des questions
+        self.themes = lithemes  # récupération des différents thèmes
+        self.game_end = False  # permet de continuer le jeu tant que cette variable n'est pas True
+        self.choose_nb_player()  # demande du nombre de joueur
+        self.player_creation()  # création des joueurs en fct du nombre
+        self.set_cheese_score()  # attribution des camemberts vides à chaque joueur
+        self.turn_cnt = 0  # compteur de tour de jeu
+        self.game_turn()  # lancement de la partie
+
     def choose_nb_player(self):
         # définir un nombre de joueur
         self.nb_player = int(input("Choisissez un nombre de joueur: "))
@@ -23,8 +24,8 @@ class Gameplay():
         # création des joueurs en fonction du nombre, stockage dans un dictionnaire {id : objet joueur}
         self.players = {}
         for i in range(0, self.nb_player):
-            self.players[i+1] = Player(input(f"Quel est le nom du joueur {i+1}? : "))
-    
+            self.players[i + 1] = Player(input(f"Quel est le nom du joueur {i + 1}? : "))
+
     def set_cheese_score(self):
         for p in self.players.values():
             for t in self.themes:
@@ -43,7 +44,7 @@ class Gameplay():
             for i in range(0, len(self.players)):
                 print(f"Début du tour n°{self.turn_cnt}")
                 # on définit le joueur dont c'est le tour
-                active_player = self.players[i+1]
+                active_player = self.players[i + 1]
                 print(f"{active_player.name}, c'est ton tour !")
                 active_player.turn = True
                 # tant que joueur.turn est vrai le joueur va pouvoir jouer (tant qu'il ne donne pas de mauvaise réponse)
@@ -57,7 +58,7 @@ class Gameplay():
                             self.credit_cheese(active_player, asked_question)
                             active_player.score += 1
                     # sinon on ajoute 1 point à son score
-                    else :
+                    else:
                         active_player.score += 1
                     # affichage du score actuel du joueur
                     active_player.give_score()
@@ -67,7 +68,7 @@ class Gameplay():
         self.give_scores()
         # lancement du tour suivant
         self.game_turn()
-    
+
     # fonction pour poser une question
     def ask_question(self):
         # niveau de question random
@@ -138,7 +139,7 @@ class Gameplay():
             else:
                 print("Mauvaise réponse")
                 return False
-    
+
     # fonction pour retirer une question bien répondue
     def remove_question(self, lvl):
         del self.questions[lvl][0]
