@@ -1,5 +1,9 @@
 import tkinter as tk
 from tkinter import font as tkfont
+import random
+from class_Gameplay import Gameplay
+
+colors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
 
 class App(tk.Tk):
 
@@ -68,29 +72,31 @@ class Gameboard(tk.Frame):
         self.game_frame = tk.Frame(self, height=650, width=1500)
         self.game_frame.grid(row=1)
         # frame qui contient le plateau de jeu
-        self.gameboard_frame = tk.Frame(self.game_frame, bg='blue', height=650, width=900)
+        self.gameboard_frame = tk.Frame(self.game_frame, height=650, width=880)
         self.gameboard_frame.grid(row=0, column=0, sticky='ns')
         # frame qui contient les questions et choix de réponses
-        self.questions_frame = tk.Frame(self.game_frame, bg='green', height=650, width=600)
+        self.questions_frame = tk.Frame(self.game_frame, bg='green', height=650, width=620)
         self.questions_frame.grid(row=0, column=1, sticky='ns')
+        # création de la grille
+        grid_cells = self.create_grid()
 
-        # création du canvas
-        self.c = tk.Canvas(self.gameboard_frame, height=650, width=900, bg='pink')
-        self.c.pack(fill=tk.BOTH, expand=True)
-        self.c.bind('<Configure>', self.create_grid)
-
+    # création de la grille
     def create_grid(self):
-        self.w = self.c.winfo_width()
-        self.h = self.c.winfo_heigth()
-        self.c.delete('grid_line')
-
-        for i in range(0, self.w, 10):
-            self.c.create_line([(i, 0), (i, self.h)], tag='grid_line')
-
-        for i in range(0, self.h, 10):
-            self.c.create_line([(0, i), (self.w, i)], tag='grid_line')
-
-
+        self.full_grid = {}
+        color_cnt = 0
+        for i in range(0, 11):
+            row = set()
+            for j in range(0, 11):
+                cell = tk.Frame(self.gameboard_frame, height=59, width=80, bg='white', borderwidth=1, relief="solid")
+                if i == 0 or i == 10 or j == 0 or j == 10:
+                    cell.configure(bg=colors[color_cnt])
+                    color_cnt += 1
+                cell.grid(row=i, column=j)
+                row.add(cell)
+                if color_cnt > 4:
+                    color_cnt = 0
+            self.full_grid[i] = row
+        return self.full_grid
 
 
 class LoadGame(tk.Frame):

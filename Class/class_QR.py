@@ -35,6 +35,7 @@ class Theme():
     def __init__(self, tid, tlabel):
         self.id = tid
         self.label = tlabel
+        self.color = ''
     
     def __str__(self):
         return f"{self.label}"

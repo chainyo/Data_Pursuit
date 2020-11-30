@@ -81,15 +81,16 @@ class Bdd:
         return liste_reponse
 
     @classmethod
-    def get_theme(cls):
+    def get_theme(cls, licolors):
         cls.connect()
         liste_theme = []
         query = "select * from theme"
 
         cls.cursor.execute(query)
         fetch = cls.cursor.fetchall()
-        for row in fetch:
+        for i, row in enumerate(fetch):
             theme = Theme(str(row[0]), str(row[1]))
+            theme.color = licolors[i]
             liste_theme.append(theme)
         cls.close()
         return liste_theme   

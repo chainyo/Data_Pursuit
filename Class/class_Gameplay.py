@@ -1,5 +1,6 @@
 from Class.class_Player import Player
 from Class.class_Bdd import Bdd
+from Class.class_Interface import App, StartPage, PlayerSelection, Gameboard, LoadGame
 import random
 
 
@@ -10,11 +11,14 @@ class Gameplay:
         self.questions = liquestions  # récupération de la liste des questions
         self.themes = lithemes  # récupération des différents thèmes
         self.game_end = False  # permet de continuer le jeu tant que cette variable n'est pas True
-        self.choose_nb_player()  # demande du nombre de joueur
-        self.player_creation()  # création des joueurs en fct du nombre
-        self.set_cheese_score()  # attribution des camemberts vides à chaque joueur
         self.turn_cnt = 0  # compteur de tour de jeu
-        self.game_turn()  # lancement de la partie
+        # affichage de la fenêtre de l'appli
+        self.app = App()
+        self.app.mainloop()
+        #self.choose_nb_player()  # demande du nombre de joueur
+        #self.player_creation()  # création des joueurs en fct du nombre
+        #self.set_cheese_score()  # attribution des camemberts vides à chaque joueur
+        #self.game_turn()  # lancement de la partie
 
     def choose_nb_player(self):
         # définir un nombre de joueur
