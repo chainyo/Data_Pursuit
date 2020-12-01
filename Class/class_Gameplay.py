@@ -61,10 +61,9 @@ class Gameplay:
         if self.game_end != True:
             self.turn_cnt += 1
         self.set_active_player(self.player_cnt, self.players)
-        print(self.set_active_player)
         
     def set_active_player(self, cnt, players):
-        if cnt < len(players):
+        if cnt <= len(players):
             self.active_player = self.players[self.player_cnt]
             self.active_player.turn = True
             cnt += 1
