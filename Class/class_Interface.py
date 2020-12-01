@@ -217,7 +217,8 @@ class Gameboard(tk.Frame):
         self.clean_frame(self.controller.game.active_player)
         self.controller.game.move_player(self.result)
         self.create_lab(self.controller.game.active_player)
-
+        self.button_reponses()
+        self.affiche_rep()
     # création de la grille
     def create_grid(self):
         self.full_grid = []
