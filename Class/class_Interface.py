@@ -7,7 +7,6 @@ from Class.class_Gameplay import Gameplay
 
 colors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
 
-
 class App(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -43,7 +42,6 @@ class App(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
-
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -57,7 +55,6 @@ class StartPage(tk.Frame):
         button_load = tk.Button(self, text="Load Game", command=lambda: controller.show_frame("LoadGame"))
         button_new.pack()
         button_load.pack()
-
 
 class PlayerSelection(tk.Frame):
 
@@ -119,7 +116,6 @@ class PlayerSelection(tk.Frame):
         self.controller.frames['Gameboard'].define_position()
         self.controller.frames['Gameboard'].player_board()
         self.controller.frames['Gameboard'].set_dice()
-
 
 class Gameboard(tk.Frame):
 
@@ -202,7 +198,7 @@ class Gameboard(tk.Frame):
     # création du bouton du dé
     def set_dice(self):
         # création du bouton dé
-        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', height = 5, width = 15, bd=None, relief='flat')
+        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', height = 5, width = 15, bd=None, relief='flat', state='normal')
         self.bouton.configure(command=lambda: self.run_turn())
         self.bouton.grid(row=0, column=0)
         # affichage du score du dé
@@ -211,12 +207,13 @@ class Gameboard(tk.Frame):
 
     # fonction pour lancement du dé et avancement pion
     def run_turn(self):
+        self.state(self.bouton)
         self.roll()
         self.result = int(self.score.cget("text"))
-        self.position = self.controller.game.active_player.position
         self.clean_frame(self.controller.game.active_player)
         self.controller.game.move_player(self.result)
         self.create_lab(self.controller.game.active_player)
+        self.position = self.controller.game.active_player.position
 
     # création de la grille
     def create_grid(self):
@@ -240,6 +237,13 @@ class Gameboard(tk.Frame):
     def roll(self):
         x = random.randint(1, 6)
         self.score.configure(text=x)
+
+    # fonction pour changer l'état du bouton
+    def state(self, button):
+        if button["state"] == 'disabled':
+            button["state"] = 'normal'
+        else:
+            button["state"] = 'disabled'
 
     def button_reponses(self):
         # choix de réponses
