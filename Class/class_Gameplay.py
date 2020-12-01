@@ -11,10 +11,7 @@ class Gameplay:
         self.themes = lithemes  # récupération des différents thèmes
         self.game_end = False  # permet de continuer le jeu tant que cette variable n'est pas True
         self.turn_cnt = 0  # compteur de tour de jeu
-        #self.choose_nb_player()  # demande du nombre de joueur
-        #self.player_creation()  # création des joueurs en fct du nombre
-        #self.set_cheese_score()  # attribution des camemberts vides à chaque joueur
-        #self.game_turn()  # lancement de la partie
+        self.player_cnt = 1 # compteur pour suivre le tour des joueurs
 
     def choose_nb_player(self, num):
         # définir un nombre de joueur
@@ -39,37 +36,41 @@ class Gameplay:
             print(player)
 
     def game_turn(self):
-        # check si le jeu n'est pas terminé
-        if self.game_end != True:
-            self.turn_cnt += 1
-            # enchainement des tours du joueur 1 à 4
-            for i in range(0, len(self.players)):
-                print(f"Début du tour n°{self.turn_cnt}")
-                # on définit le joueur dont c'est le tour
-                active_player = self.players[i + 1]
-                print(f"{active_player.name}, c'est ton tour !")
-                active_player.turn = True
-                # tant que joueur.turn est vrai le joueur va pouvoir jouer (tant qu'il ne donne pas de mauvaise réponse)
-                while active_player.turn == True:
-                    asked_question = self.ask_question()
-                    # si la réponse est fausse le tour du joueur se termine
-                    if asked_question[0] == False:
-                        active_player.turn = False
-                    elif asked_question[0] == True and asked_question[1] == 2:
-                        if active_player.cheese[asked_question[2]] == False:
-                            self.credit_cheese(active_player, asked_question)
-                            active_player.score += 1
-                    # sinon on ajoute 1 point à son score
-                    else:
-                        active_player.score += 1
-                    # affichage du score actuel du joueur
-                    active_player.give_score()
+        while active_player.turn == True:
+            asked_question = self.ask_question()
+            # si la réponse est fausse le tour du joueur se termine
+            if asked_question[0] == False:
+                active_player.turn = False
+            elif asked_question[0] == True and asked_question[1] == 2:
+                if active_player.cheese[asked_question[2]] == False:
+                    self.credit_cheese(active_player, asked_question)
+                    active_player.score += 1
+            # sinon on ajoute 1 point à son score
+            else:
+                active_player.score += 1
+            # affichage du score actuel du joueur
+            active_player.give_score()
         # affichage de la fin du tour
         print(f"Fin du tour n°{self.turn_cnt}")
         # affichage du scores de tous les joueurs à la fin du tour
         self.give_scores()
         # lancement du tour suivant
         self.game_turn()
+
+    def init_game_turn(self):
+        # check si le jeu n'est pas terminé
+        if self.game_end != True:
+            self.turn_cnt += 1
+        self.set_active_player(self.player_cnt, self.players)
+        
+    def set_active_player(self, cnt, players):
+        if cnt < len(players):
+            active_player = self.players[self.player_cnt]
+            active_player.turn = True
+            cnt += 1
+        else:
+            cnt = 1
+            self.set_active_player(self.player_cnt, self.players)
 
     # fonction pour poser une question
     def ask_question(self):
