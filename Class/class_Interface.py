@@ -125,6 +125,8 @@ class Gameboard(tk.Frame):
         #frame qui contient le dé et l'affichage
         self.dice_frame1 = tk.Frame(self.player_frame, height=150, width=300)
         self.dice_frame1.grid(row=0, column=0, sticky='ns')
+        
+
         # zone qui regroupe deux autres frames (Plateau & Questions)
         self.game_frame = tk.Frame(self, height=650, width=1500)
         self.game_frame.grid(row=1)
@@ -154,10 +156,14 @@ class Gameboard(tk.Frame):
     #Affiche les joueurs dans la Frame Playername
     def player_board(self):
         for i, player in enumerate(self.controller.game.players.values()):
-            self.frame = tk.Frame(self.player_frame, height=150, width=300, bg=player.color)
-            self.frame.grid(row=0, column=i+1, sticky='ns')
-            self.label = tk.Label(self.frame, text=player.name)
-            self.label.grid(row = 5)
+            self.frame_jojo = tk.Frame(self.player_frame, height=150, width=300, bg=player.color)
+            self.frame_jojo.grid(row=0, column=i+1, sticky='ns')
+            self.frame_sous = tk.Frame(self.frame_jojo, bg="red", height=75, width = 300)
+            self.frame_sous.pack()
+            self.frame_sous2 = tk.Frame(self.frame_jojo, bg="green", height=75, width = 300)
+            self.frame_sous2.pack()
+            self.label = tk.Label(self.frame_sous2, text=player.name)
+            self.label.pack()
 
     # définir les positions initiales des joueurs
     def define_position(self):
