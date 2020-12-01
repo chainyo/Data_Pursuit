@@ -1,6 +1,5 @@
 from Class.class_Player import Player
 from Class.class_Bdd import Bdd
-from Class.class_Interface import App, StartPage, PlayerSelection, Gameboard, LoadGame
 import random
 
 
@@ -12,24 +11,23 @@ class Gameplay:
         self.themes = lithemes  # récupération des différents thèmes
         self.game_end = False  # permet de continuer le jeu tant que cette variable n'est pas True
         self.turn_cnt = 0  # compteur de tour de jeu
-        # affichage de la fenêtre de l'appli
-        self.app = App()
-        self.app.mainloop()
         #self.choose_nb_player()  # demande du nombre de joueur
         #self.player_creation()  # création des joueurs en fct du nombre
         #self.set_cheese_score()  # attribution des camemberts vides à chaque joueur
         #self.game_turn()  # lancement de la partie
 
-    def choose_nb_player(self):
+    def choose_nb_player(self, num):
         # définir un nombre de joueur
-        self.nb_player = int(input("Choisissez un nombre de joueur: "))
+        self.nb_player = int(num)
 
-    def player_creation(self):
+    def player_creation(self, linames):
         # création des joueurs en fonction du nombre, stockage dans un dictionnaire {id : objet joueur}
         self.players = {}
-        for i in range(0, self.nb_player):
-            self.players[i + 1] = Player(input(f"Quel est le nom du joueur {i + 1}? : "))
+        pcolors = ['#caffbf', '#bdb2ff', '#9bf6ff', '#ffadad']
+        for i, name in enumerate(linames):
+            self.players[i + 1] = Player(name, pcolors[i])
 
+    # initialisation des camemberts des joueurs à False
     def set_cheese_score(self):
         for p in self.players.values():
             for t in self.themes:
