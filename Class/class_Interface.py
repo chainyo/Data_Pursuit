@@ -45,9 +45,10 @@ class StartPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+        # titre
         lab_title = tk.Label(self, text="Data Pursuit", font=controller.title_font)
         lab_title.pack(side="top", fill="x", pady=10)
-
+        # boutons
         button_new = tk.Button(self, text="New Game", command=lambda: controller.show_frame("PlayerSelection"))
         button_load = tk.Button(self, text="Load Game", command=lambda: controller.show_frame("LoadGame"))
         button_new.pack()
