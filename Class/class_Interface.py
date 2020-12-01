@@ -4,8 +4,6 @@ import random
 from Class.class_Bdd import Bdd
 from Class.class_Gameplay import Gameplay
 
-colors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
-
 class App(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -41,6 +39,7 @@ class App(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -54,11 +53,13 @@ class StartPage(tk.Frame):
         button_new.pack()
         button_load.pack()
 
+
 class PlayerSelection(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+
         #titre fenêtre
         label = tk.Label(self, text="Player Selection", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
@@ -109,12 +110,34 @@ class PlayerSelection(tk.Frame):
         self.controller.game.set_cheese_score()
         self.controller.frames['Gameboard'].define_position()
 
+
 class Gameboard(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
+        # segmentation de la fenêtre en trois zone
+        player_frame = tk.Frame(self, bg="red", height=200, width=1500)
+        player_frame.grid(row=0)
+        gameboard_frame = tk.Frame(self, bg='blue', height=600, width=900)
+        gameboard_frame.grid(row=1, column=0)
+        questions_frame = tk.Frame(self, bg='green', height=600, width=600)
+        questions_frame.grid(row=1, column=1)
+
+        label_question = tk.Label(questions_frame, text=f"{Gameplay(questions, themes)}")
+        label_question.grid(row=1, column=1)
+        button_rep1 = tk.Frame(questions_frame, text=f"{Gameplay.show_reponses()}", bg="green")
+        button_rep1.grid(row=3, column=2)
+        button_rep2 = tk.Frame(questions_frame, text=f"{Gameplay.show_reponses()}", bg="yellow")
+        button_rep2.grid(row=5, column=1)
+        button_rep3 = tk.Frame(questions_frame, text=f"{Gameplay.show_reponses()}", bg="red")
+        button_rep3.grid(row=7, column=2)
+        button_rep4 = tk.Frame(questions_frame, text=f"{Gameplay.show_reponses()}", bg="blue")
+        button_rep4.grid(row=9, column=1)
+
+        entry = tk.Entry()
+        entry.grid(row=4, column=1)
         # segmentation de la fenêtre en trois zone
         # zone pour l'affichage des joueurs et de leurs camemberts
         self.player_frame = tk.Frame(self, bg="red", height=150, width=1500)
@@ -175,8 +198,7 @@ class Gameboard(tk.Frame):
     def clean_frame(self, player):
         for widget in self.grid_cells[player.position[0]][player.position[1]].winfo_children():
             widget.destroy()
-
-
+            
     # création de la grille
     def create_grid(self):
         self.full_grid = []
@@ -201,12 +223,12 @@ class Gameboard(tk.Frame):
         self.score.configure(text=x)
 
 class LoadGame(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         label = tk.Label(self, text="Choose a game to load", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
         button = tk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("StartPage"))
+                           command=lambda: controller.show_frame("StartPage"))
         button.pack()
