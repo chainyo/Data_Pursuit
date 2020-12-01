@@ -235,6 +235,5 @@ class LoadGame(tk.Frame):
         self.controller = controller
         label = tk.Label(self, text="Choose a game to load", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
-        button = tk.Button(self, text="Back",
-                            command=lambda: controller.show_frame("StartPage"))
+        button = tk.Button(self, text="Back", command=lambda: controller.show_frame("StartPage"))
         button.pack()
