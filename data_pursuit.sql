@@ -102,7 +102,7 @@ INSERT INTO `reponses` (`id_reponse`, `id_question`, `libelle_reponse`, `valeur_
 (407, 403, 'Dijkstra', 1),
 (408, 404, '7', 1),
 (409, 405, '10', 1),
-(4010, 406, 'Vrai', 0),
+(410, 406, 'Vrai', 0),
 (411, 406, 'Faux', 1),
 (412, 407, 'XOR', 1),
 (413, 407, 'OR', 0),
