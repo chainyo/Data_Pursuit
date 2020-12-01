@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import font as tkfont
 import random
+from functools import partial
 from Class.class_Bdd import Bdd
 from Class.class_Gameplay import Gameplay
 
@@ -131,7 +132,6 @@ class Gameboard(tk.Frame):
         self.dice_frame1 = tk.Frame(self.player_frame, height=150, width=300)
         self.dice_frame1.grid(row=0, column=0, sticky='ns')
         
-
         # zone qui regroupe deux autres frames (Plateau & Questions)
         self.game_frame = tk.Frame(self, height=650, width=1500)
         self.game_frame.grid(row=1)
@@ -140,12 +140,8 @@ class Gameboard(tk.Frame):
         self.gameboard_frame.grid(row=0, column=0, sticky='ns')
 
         # frame qui contient les questions et choix de réponses
-        self.questions_frame = tk.Frame(self.game_frame, bg='yellow', height=650, width=620)
+        self.questions_frame = tk.Frame(self.game_frame, height=650, width=620)
         self.questions_frame.grid(row=0, column=1, sticky='ns')
-
-        #self.label_question = tk.Label(self.game_frame, bg='green',
-        #                               text=f"{self.controller.game.ask_questions.question}", height=650, width=620)
-        #self.label_question.grid()
 
         # création de la grille
         self.grid_cells = self.create_grid() 
@@ -215,8 +211,17 @@ class Gameboard(tk.Frame):
         self.controller.game.move_player(self.result)
         self.create_lab(self.controller.game.active_player)
         self.position = self.controller.game.active_player.position
-        self.button_reponses()
-        self.affiche_rep()
+        self.theme = self.define_theme(self.position)
+        self.question = self.controller.game.set_question(self.theme)
+        self.show_question(self.question)
+        self.answers = self.controller.game.get_question_answers(self.question.id)
+        self.show_answers(self.answers)
+
+    # definir le thème en fonction de la couleur de bg du brackground
+    def define_theme(self, position):
+        cell_color = self.grid_cells[position[0]][position[1]]["bg"]
+        theme = [c for c in self.controller.themes if c.color == cell_color]
+        return theme[0]
 
     # création de la grille
     def create_grid(self):
@@ -241,6 +246,45 @@ class Gameboard(tk.Frame):
         x = random.randint(1, 6)
         self.score.configure(text=x)
 
+    # créer frame question
+    def show_question(self, txt):
+        # Label de la question
+        self.lab = tk.Label(self.questions_frame, text=txt)
+        self.lab.grid(row=0)
+
+    # créer frame des réponses
+    def show_answers(self, answers):
+        if len(answers) > 1:
+            for i, ans in enumerate(answers):
+                self.command = partial(self.ans_compare, (ans.label, answers))
+                self.button = tk.Button(self.questions_frame, text=ans.label, relief='flat', command=self.command)
+                self.button.grid(row=i+1)
+        else:
+            self.input = tk.Entry(self.questions_frame)
+            self.input.grid(row=2)
+            self.validation = tk.Button(self.questions_frame, text='Valider', command=lambda: self.ans_compare((self.input.get(), answers)))
+            self.validation.grid(row=3)
+
+    # fonction pour comparer la réponse
+    def ans_compare(self, ans):
+        self.sucess = self.controller.game.rep_compare(ans[0], ans[1])
+        if self.sucess == True:
+            self.remove_question(self.question)
+        else:
+            self.controller.game.active_player.turn = False
+            self.controller.game.set_active_player()
+        self.state(self.bouton)
+        self.clean_qr(self.questions_frame)
+        
+    # nettoyage des frames questions / réponses
+    def clean_qr(self, frame):
+        for widget in frame.winfo_children():
+            widget.destroy()
+
+    # fonction pour retirer une question bien répondue
+    def remove_question(self, question):
+        self.controller.questions[question.level - 1].remove(question)
+
     # fonction pour changer l'état du bouton
     def state(self, button):
         if button["state"] == 'disabled':
@@ -248,22 +292,9 @@ class Gameboard(tk.Frame):
         else:
             button["state"] = 'disabled'
 
-    def button_reponses(self):
-        # choix de réponses
-        if len(self.controller.game.show_reponses) > 1:
-            for l in range(len(self.controller.game.show_reponses)):
-                self.controller.button_rep = tk.Button(self.game_frame, text="f{self.controller.game.show_reponses}",
-                                                       command=lambda: self.controller.game.ask_questions.rep_compare)
-                self.controller.button_rep.grid()
-        else:
-            entry = tk.Entry(self.game_frame, font=40)
-            entry.grid()
-
     def affiche_rep(self):
-        label_reponse = tk.Label(self.game_frame, text="f{self.controller.game.ask_questions.reponses}", font=("Helvetica", 20), bg='orange', fg='white', height=5,
-                              width=10, bd=None)
+        label_reponse = tk.Label(self.game_frame, text="f{self.controller.game.ask_questions.reponses}", font=("Helvetica", 20), bg='orange', fg='white', height=5, width=10, bd=None)
         label_reponse.grid()
-
 
 class LoadGame(tk.Frame):
 
