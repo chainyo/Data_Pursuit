@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import *
 from tkinter import font as tkfont
 import random
 from Class.class_Bdd import Bdd
@@ -16,6 +17,14 @@ class App(tk.Tk):
         self.minsize(1500, 820)
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
+        
+         # stockage des données
+        questions_1, questions_2, questions_3 = Bdd.get_question_1(), Bdd.get_question_2(), Bdd.get_question_3()
+        self.questions = (questions_1, questions_2, questions_3)
+        # stockage des différents thèmes et de leurs couleurs
+        self.themes = Bdd.get_theme(colors)
+        # création de la partie
+        self.game = Gameplay(self.questions, self.themes)
 
         container = tk.Frame(self)
         container.pack(side="top", fil="both", expand=True)
@@ -29,14 +38,6 @@ class App(tk.Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
         self.show_frame("StartPage")
-
-        # stockage des données
-        questions_1, questions_2, questions_3 = Bdd.get_question_1(), Bdd.get_question_2(), Bdd.get_question_3()
-        self.questions = (questions_1, questions_2, questions_3)
-        # stockage des différents thèmes et de leurs couleurs
-        self.themes = Bdd.get_theme(colors)
-        # création de la partie
-        self.game = Gameplay(self.questions, self.themes)
 
     def show_frame(self, page_name):
         frame = self.frames[page_name]
@@ -85,8 +86,7 @@ class PlayerSelection(tk.Frame):
         button_back = tk.Button(self, text="Back", command=lambda: controller.show_frame("StartPage"))
         button_back.pack()
         # bouton pour lancer la partie
-        button_launch = tk.Button(self, text="Launch Game",
-                                  command=lambda: [controller.show_frame("Gameboard"), self.launch_game()])
+        button_launch = tk.Button(self, text="Launch Game", command=lambda: [controller.show_frame("Gameboard"), self.launch_game()])
         button_launch.pack()
 
     # fonction callback permettant de mettre à jour l'affichage via le choix sur le menu déroulant 
@@ -115,7 +115,10 @@ class PlayerSelection(tk.Frame):
         self.get_players_names(self.frame_entry)
         self.controller.game.player_creation(self.names_li)
         self.controller.game.set_cheese_score()
+        self.controller.game.init_game_turn()
         self.controller.frames['Gameboard'].define_position()
+        self.controller.frames['Gameboard'].player_board()
+        self.controller.frames['Gameboard'].set_dice()
 
 
 class Gameboard(tk.Frame):
@@ -128,17 +131,11 @@ class Gameboard(tk.Frame):
         # zone pour l'affichage des joueurs et de leurs camemberts
         self.player_frame = tk.Frame(self, bg="red", height=150, width=1500)
         self.player_frame.grid(row=0)
-        # frame qui contient le dé et l'affichage
-        self.dice_frame1 = tk.Frame(self.player_frame, height=150, width=300, bg='yellow')
+        #frame qui contient le dé et l'affichage
+        self.dice_frame1 = tk.Frame(self.player_frame, height=150, width=300)
         self.dice_frame1.grid(row=0, column=0, sticky='ns')
-        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='red')
-        self.dice_frame.grid(row=0, column=1, sticky='ns')
-        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='blue')
-        self.dice_frame.grid(row=0, column=2, sticky='ns')
-        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='green')
-        self.dice_frame.grid(row=0, column=3, sticky='ns')
-        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='pink')
-        self.dice_frame.grid(row=0, column=4, sticky='ns')
+        
+
         # zone qui regroupe deux autres frames (Plateau & Questions)
         self.game_frame = tk.Frame(self, height=650, width=1500)
         self.game_frame.grid(row=1)
@@ -147,7 +144,7 @@ class Gameboard(tk.Frame):
         self.gameboard_frame.grid(row=0, column=0, sticky='ns')
 
         # frame qui contient les questions et choix de réponses
-        self.questions_frame = tk.Frame(self.game_frame, bg='green', height=650, width=620)
+        self.questions_frame = tk.Frame(self.game_frame, bg='yellow', height=650, width=620)
         self.questions_frame.grid(row=0, column=1, sticky='ns')
 
         #self.label_question = tk.Label(self.game_frame, bg='green',
@@ -155,15 +152,24 @@ class Gameboard(tk.Frame):
         #self.label_question.grid()
 
         # création de la grille
-        self.grid_cells = self.create_grid()
-        # affichage du score
-        self.score = tk.Label(self.dice_frame1, text='rien', font=("Helvetica", 20), bg='orange', fg='white', height=5,
-                              width=10, bd=None)
-        self.score.grid(row=0, column=1)
-        # création du bouton
-        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', height=5, width=15, bd=None, relief='flat')
-        self.bouton.configure(command=lambda: self.roll())
-        self.bouton.grid(row=0, column=0)
+        self.grid_cells = self.create_grid() 
+    
+    #Affiche les joueurs dans la Frame Playername
+    def player_board(self):
+        for i, player in enumerate(self.controller.game.players.values()):
+            self.frame_jojo = tk.Frame(self.player_frame, height=150, width=300, bg=player.color)
+            self.frame_jojo.grid(row=0, column=i+1, sticky='ns')
+            self.frame_camembert = tk.Frame(self.frame_jojo, bg="red", height=75, width = 300)
+            self.frame_camembert.pack()
+            self.frame_pseudo = tk.Frame(self.frame_jojo, bg="green", height=75, width = 300)
+            self.frame_pseudo.pack()
+            #affichage des camemberts
+            for i in range(len(self.controller.themes)):
+                self.frame_cam = tk.Frame(self.frame_camembert, borderwidth="1",relief="solid", height=75, width = 60)
+                self.frame_cam.grid(row=0, column=i+1)
+            #label pseudo
+            self.label = tk.Label(self.frame_pseudo, text=player.name)
+            self.label.place(x=150, y=35, anchor='center')
 
     # définir les positions initiales des joueurs
     def define_position(self):
@@ -184,14 +190,33 @@ class Gameboard(tk.Frame):
 
     # fonction pour la création d'un pion pour un joueur
     def create_lab(self, player):
-        player.lab = tk.Label(self.grid_cells[player.position[0]][player.position[1]], text=player.name,
-                              bg=player.color)
-        player.lab.pack(expand='yes')
+        player.lab = tk.Label(self.grid_cells[player.position[0]][player.position[1]], text=player.name, bg=player.color)
+        player.lab.place(x=40, y=30, anchor='center')
 
     # fonction pour nettoyer la frame d'un emplacement passé d'un joueur
     def clean_frame(self, player):
         for widget in self.grid_cells[player.position[0]][player.position[1]].winfo_children():
-            widget.destroy()
+            if widget == player.lab:
+                widget.destroy()
+                
+    # création du bouton du dé
+    def set_dice(self):
+        # création du bouton dé
+        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', height = 5, width = 15, bd=None, relief='flat')
+        self.bouton.configure(command=lambda: self.run_turn())
+        self.bouton.grid(row=0, column=0)
+        # affichage du score du dé
+        self.score = tk.Label(self.dice_frame1, text='', font=("Helvetica", 20), fg='black', height = 5, width = 10, bd=None)
+        self.score.grid(row=0, column=1)
+
+    # fonction pour lancement du dé et avancement pion
+    def run_turn(self):
+        self.roll()
+        self.result = int(self.score.cget("text"))
+        self.position = self.controller.game.active_player.position
+        self.clean_frame(self.controller.game.active_player)
+        self.controller.game.move_player(self.result)
+        self.create_lab(self.controller.game.active_player)
 
     # création de la grille
     def create_grid(self):
@@ -211,7 +236,7 @@ class Gameboard(tk.Frame):
             self.full_grid.append(row)
         return self.full_grid
 
-    # création du dé
+    # fonction pour lancer le dé
     def roll(self):
         x = random.randint(1, 6)
         self.score.configure(text=x)
