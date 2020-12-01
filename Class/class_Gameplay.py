@@ -60,16 +60,16 @@ class Gameplay:
         # check si le jeu n'est pas terminé
         if self.game_end != True:
             self.turn_cnt += 1
-        self.set_active_player(self.player_cnt, self.players)
+        self.set_active_player()
         
-    def set_active_player(self, cnt, players):
-        if cnt <= len(players):
+    def set_active_player(self):
+        if self.player_cnt <= len(self.players):
             self.active_player = self.players[self.player_cnt]
             self.active_player.turn = True
-            cnt += 1
+            self.player_cnt += 1
         else:
-            cnt = 1
-            self.set_active_player(self.player_cnt, self.players)
+            self.player_cnt = 1
+            self.set_active_player()
 
     def move_player(self, dice):
         increment = int(dice)
@@ -86,27 +86,12 @@ class Gameplay:
                 self.active_player.position = (x - 1, y)
             increment -= 1
 
-    def set_question(self):
+    def set_question(self, theme):
         # niveau de question random
         level = self.random_level()
         # question random en fonction du niveau
-        question = self.random_question(level)
-        # affichage de la question dans l'interface
-        # affichage des réponses dans l'interface
-        # stockage des réponses possibles pour la question choisie
-
-    # fonction pour poser une question
-    #def ask_question(self):
-        
-    #    reponses = self.get_question_answers(question.id)
-        # et stockage de la réponse du joueur
-    #    rep = self.show_reponses(len(reponses), reponses)
-        # comparaison de la valeur de la réponse
-    #    sucess = self.rep_compare(rep, reponses)
-        # on retire la question de la liste des questions disponibles si la réponse est juste
-    #    if sucess == True:
-    #        self.remove_question(level)
-    #    return sucess, level, theme
+        self.question = self.random_question(0, theme)
+        return self.question
 
     # fonction pour créditer un camembert à un joueur
     def credit_cheese(self, player, question):
@@ -121,9 +106,12 @@ class Gameplay:
         return x
 
     # fonction random question
-    def random_question(self, lvl):
-        random.shuffle(self.questions[lvl])
-        return self.questions[lvl][0]
+    def random_question(self, lvl, theme):
+        self.question_pull = []
+        for q in self.questions[lvl]:
+            if str(q.theme) == str(theme):
+                self.question_pull.append(q)
+        return random.choice(self.question_pull)
 
     # fonction pour obtenir les réponses liées à la question (id)
     def get_question_answers(self, qid):
@@ -149,14 +137,8 @@ class Gameplay:
         for obj in li:
             if obj.label.lower() == rep.lower():
                 if obj.value == str(1):
-                    print("Bonne réponse !")
                     return True
                 else:
                     pass
             else:
-                print("Mauvaise réponse")
                 return False
-
-    # fonction pour retirer une question bien répondue
-    def remove_question(self, lvl):
-        del self.questions[lvl][0]
