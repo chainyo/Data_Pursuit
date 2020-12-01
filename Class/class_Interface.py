@@ -7,6 +7,7 @@ from Class.class_Gameplay import Gameplay
 
 colors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
 
+
 class App(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -42,6 +43,7 @@ class App(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -56,23 +58,24 @@ class StartPage(tk.Frame):
         button_new.pack()
         button_load.pack()
 
+
 class PlayerSelection(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        #titre fenêtre
+        # titre fenêtre
         label = tk.Label(self, text="Player Selection", font=controller.title_font)
         label.pack(side="top", fill="x", pady=10)
-        #liste nombre de joueurs
-        OptionList = ["1", "2", "3", "4"] 
+        # liste nombre de joueurs
+        OptionList = ["1", "2", "3", "4"]
         self.variable = tk.StringVar(self)
         self.variable.set(OptionList[0])
         self.variable.trace("w", self.callback)
         # label du titre du menu déroulant
         label_joueur = tk.Label(self, text="Choisissez le nombre de joueurs", font=controller.title_font)
         label_joueur.pack(side="top", fill="x", pady=10)
-        #menu déroulant
+        # menu déroulant
         opt = tk.OptionMenu(self, self.variable, *OptionList)
         opt.config(width=30, font=('Helvetica', 12))
         opt.pack(side="top")
@@ -91,9 +94,12 @@ class PlayerSelection(tk.Frame):
         num = self.variable.get()
         for widget in self.frame_entry.winfo_children():
             widget.destroy()
+
         def entry():
-            tk.Label(self.frame_entry, text=f"joueur {i+1} : ").grid(row = i+1, column = 0, pady=10)
-            tk.Entry(self.frame_entry, width=10, justify="center", font=("Helvetica", 10), bg="white", fg="black").grid(row = i+1, column = 1, pady=10)
+            tk.Label(self.frame_entry, text=f"joueur {i + 1} : ").grid(row=i + 1, column=0, pady=10)
+            tk.Entry(self.frame_entry, width=10, justify="center", font=("Helvetica", 10), bg="white", fg="black").grid(
+                row=i + 1, column=1, pady=10)
+
         for i in range(int(num)):
             entry()
 
@@ -103,7 +109,7 @@ class PlayerSelection(tk.Frame):
         for widget in self.frame_entry.winfo_children():
             if widget.winfo_class() == 'Entry':
                 self.names_li.append(widget.get())
-    
+
     def launch_game(self):
         self.controller.game.choose_nb_player(self.variable.get())
         self.get_players_names(self.frame_entry)
@@ -114,8 +120,9 @@ class PlayerSelection(tk.Frame):
         self.controller.frames['Gameboard'].player_board()
         self.controller.frames['Gameboard'].set_dice()
 
+
 class Gameboard(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
@@ -135,9 +142,15 @@ class Gameboard(tk.Frame):
         # frame qui contient le plateau de jeu
         self.gameboard_frame = tk.Frame(self.game_frame, height=650, width=880)
         self.gameboard_frame.grid(row=0, column=0, sticky='ns')
+
         # frame qui contient les questions et choix de réponses
         self.questions_frame = tk.Frame(self.game_frame, bg='yellow', height=650, width=620)
         self.questions_frame.grid(row=0, column=1, sticky='ns')
+
+        #self.label_question = tk.Label(self.game_frame, bg='green',
+        #                               text=f"{self.controller.game.ask_questions.question}", height=650, width=620)
+        #self.label_question.grid()
+
         # création de la grille
         self.grid_cells = self.create_grid() 
     
@@ -185,7 +198,7 @@ class Gameboard(tk.Frame):
         for widget in self.grid_cells[player.position[0]][player.position[1]].winfo_children():
             if widget == player.lab:
                 widget.destroy()
-
+                
     # création du bouton du dé
     def set_dice(self):
         # création du bouton dé
@@ -222,14 +235,31 @@ class Gameboard(tk.Frame):
                     color_cnt = 0
             self.full_grid.append(row)
         return self.full_grid
-    
+
     # fonction pour lancer le dé
     def roll(self):
-        x = random.randint(1,6)
+        x = random.randint(1, 6)
         self.score.configure(text=x)
 
+    def button_reponses(self):
+        # choix de réponses
+        if len(self.controller.game.show_reponses) > 1:
+            for l in range(len(self.controller.game.show_reponses)):
+                self.controller.button_rep = tk.Button(self.game_frame, text="f{self.controller.game.show_reponses}",
+                                                       command=lambda: self.controller.game.ask_questions.rep_compare)
+                self.controller.button_rep.grid()
+        else:
+            entry = tk.Entry(self.game_frame, font=40)
+            entry.grid()
+
+    def affiche_rep(self):
+        label_reponse = tk.Label(self.game_frame, text="f{self.controller.game.ask_questions.reponses}", font=("Helvetica", 20), bg='orange', fg='white', height=5,
+                              width=10, bd=None)
+        label_reponse.grid()
+
+
 class LoadGame(tk.Frame):
-    
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
