@@ -125,7 +125,7 @@ class Gameboard(tk.Frame):
 
         # segmentation de la fenêtre en trois zone
         # zone pour l'affichage des joueurs et de leurs camemberts
-        self.player_frame = tk.Frame(self, bg="red", height=150, width=1500)
+        self.player_frame = tk.Frame(self, height=150, width=1500)
         self.player_frame.grid(row=0)
         #frame qui contient le dé et l'affichage
         self.dice_frame1 = tk.Frame(self.player_frame, height=150, width=300)
@@ -153,19 +153,20 @@ class Gameboard(tk.Frame):
     #Affiche les joueurs dans la Frame Playername
     def player_board(self):
         for i, player in enumerate(self.controller.game.players.values()):
-            self.frame_jojo = tk.Frame(self.player_frame, height=150, width=300, bg=player.color)
-            self.frame_jojo.grid(row=0, column=i+1, sticky='ns')
-            self.frame_camembert = tk.Frame(self.frame_jojo, bg="red", height=75, width = 300)
+            self.frame_joueur = tk.Frame(self.player_frame, height=150, width=295, bg=player.color)
+            self.frame_joueur.grid(row=0, column=i+1, sticky='ns', padx=5)
+            self.frame_camembert = tk.Frame(self.frame_joueur, height=75, width = 295)
             self.frame_camembert.pack()
-            self.frame_pseudo = tk.Frame(self.frame_jojo, bg="green", height=75, width = 300)
+            self.frame_pseudo = tk.Frame(self.frame_joueur, height=75, width = 295, bg=player.color)
             self.frame_pseudo.pack()
             #affichage des camemberts
             for i in range(len(self.controller.themes)):
-                self.frame_cam = tk.Frame(self.frame_camembert, borderwidth="1",relief="solid", height=75, width = 60)
+                self.frame_cam = tk.Frame(self.frame_camembert, borderwidth="1",relief="solid", height=75, width = 59)
                 self.frame_cam.grid(row=0, column=i+1)
             #label pseudo
-            self.label = tk.Label(self.frame_pseudo, text=player.name)
-            self.label.place(x=150, y=35, anchor='center')
+            fontStyle = tkfont.Font(family="Helvetica", size=20)
+            self.label = tk.Label(self.frame_pseudo, text=player.name, bg=player.color, font=fontStyle)
+            self.label.place(x=148, y=35, anchor='center')
 
     # définir les positions initiales des joueurs
     def define_position(self):
@@ -214,6 +215,8 @@ class Gameboard(tk.Frame):
         self.controller.game.move_player(self.result)
         self.create_lab(self.controller.game.active_player)
         self.position = self.controller.game.active_player.position
+        self.button_reponses()
+        self.affiche_rep()
 
     # création de la grille
     def create_grid(self):
