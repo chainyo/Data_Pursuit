@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import *
 from tkinter import font as tkfont
 import random
 from Class.class_Bdd import Bdd
@@ -158,12 +159,17 @@ class Gameboard(tk.Frame):
         for i, player in enumerate(self.controller.game.players.values()):
             self.frame_jojo = tk.Frame(self.player_frame, height=150, width=300, bg=player.color)
             self.frame_jojo.grid(row=0, column=i+1, sticky='ns')
-            self.frame_sous = tk.Frame(self.frame_jojo, bg="red", height=75, width = 300)
-            self.frame_sous.pack()
-            self.frame_sous2 = tk.Frame(self.frame_jojo, bg="green", height=75, width = 300)
-            self.frame_sous2.pack()
-            self.label = tk.Label(self.frame_sous2, text=player.name)
-            self.label.pack()
+            self.frame_camembert = tk.Frame(self.frame_jojo, bg="red", height=75, width = 300)
+            self.frame_camembert.pack()
+            self.frame_pseudo = tk.Frame(self.frame_jojo, bg="green", height=75, width = 300)
+            self.frame_pseudo.pack()
+            #affichage des camemberts
+            for i in range(len(self.controller.themes)):
+                self.frame_cam = tk.Frame(self.frame_camembert, borderwidth="1",relief="solid", height=75, width = 60)
+                self.frame_cam.grid(row=0, column=i+1)
+            #label pseudo
+            self.label = tk.Label(self.frame_pseudo, text=player.name)
+            self.label.place(x=150, y=35, anchor='center')
 
     # définir les positions initiales des joueurs
     def define_position(self):
