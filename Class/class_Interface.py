@@ -15,6 +15,14 @@ class App(tk.Tk):
         self.minsize(1500, 820)
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
+        
+         # stockage des données
+        questions_1, questions_2, questions_3 = Bdd.get_question_1(), Bdd.get_question_2(), Bdd.get_question_3()
+        self.questions = (questions_1, questions_2, questions_3)
+        # stockage des différents thèmes et de leurs couleurs
+        self.themes = Bdd.get_theme(colors)
+        # création de la partie
+        self.game = Gameplay(self.questions, self.themes)
 
         container = tk.Frame(self)
         container.pack(side="top", fil="both", expand=True)
@@ -28,14 +36,6 @@ class App(tk.Tk):
             self.frames[page_name] = frame
             frame.grid(row=0, column=0, sticky="nsew")
         self.show_frame("StartPage")
-
-        # stockage des données
-        questions_1, questions_2, questions_3 = Bdd.get_question_1(), Bdd.get_question_2(), Bdd.get_question_3()
-        self.questions = (questions_1, questions_2, questions_3)
-        # stockage des différents thèmes et de leurs couleurs
-        self.themes = Bdd.get_theme(colors)
-        # création de la partie
-        self.game = Gameplay(self.questions, self.themes)
 
     def show_frame(self, page_name):
         frame = self.frames[page_name]
@@ -109,6 +109,7 @@ class PlayerSelection(tk.Frame):
         self.controller.game.player_creation(self.names_li)
         self.controller.game.set_cheese_score()
         self.controller.frames['Gameboard'].define_position()
+        self.controller.frames['Gameboard'].player_board()
         self.controller.game.init_game_turn()
 
 class Gameboard(tk.Frame):
@@ -124,14 +125,6 @@ class Gameboard(tk.Frame):
         #frame qui contient le dé et l'affichage
         self.dice_frame1 = tk.Frame(self.player_frame, height=150, width=300)
         self.dice_frame1.grid(row=0, column=0, sticky='ns')
-        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='red')
-        self.dice_frame.grid(row=0, column=1, sticky='ns')
-        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='blue')
-        self.dice_frame.grid(row=0, column=2, sticky='ns')
-        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='green')
-        self.dice_frame.grid(row=0, column=3, sticky='ns')
-        self.dice_frame = tk.Frame(self.player_frame, height=150, width=300, bg='pink')
-        self.dice_frame.grid(row=0, column=4, sticky='ns')
         # zone qui regroupe deux autres frames (Plateau & Questions)
         self.game_frame = tk.Frame(self, height=650, width=1500)
         self.game_frame.grid(row=1)
@@ -157,6 +150,14 @@ class Gameboard(tk.Frame):
         self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', height = 5, width = 15, bd=None, relief='flat')
         self.bouton.configure(command=lambda: self.roll())
         self.bouton.grid(row=0, column=0)
+    
+    #Affiche les joueurs dans la Frame Playername
+    def player_board(self):
+        for i, player in enumerate(self.controller.game.players.values()):
+            self.frame = tk.Frame(self.player_frame, height=150, width=300, bg=player.color)
+            self.frame.grid(row=0, column=i+1, sticky='ns')
+            self.label = tk.Label(self.frame, text=player.name)
+            self.label.grid(row = 5)
 
     # définir les positions initiales des joueurs
     def define_position(self):
