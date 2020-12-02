@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
 from tkinter import font as tkfont
 import random
 from functools import partial
@@ -17,7 +18,7 @@ class App(tk.Tk):
         self.minsize(1500, 820)
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
-        
+
          # stockage des données
         questions_1, questions_2, questions_3 = Bdd.get_question_1(), Bdd.get_question_2(), Bdd.get_question_3()
         self.questions = (questions_1, questions_2, questions_3)
@@ -151,8 +152,9 @@ class Gameboard(tk.Frame):
         # création de la grille
         self.grid_cells = self.create_grid() 
     
-    #Affiche les joueurs dans la Frame Playername
+    #Affiche les joueurs dans la Frame Playerframe
     def player_board(self):
+        self.rows = []
         for i, player in enumerate(self.controller.game.players.values()):
             self.frame_joueur = tk.Frame(self.player_frame, height=150, width=295, bg=player.color)
             self.frame_joueur.grid(row=0, column=i+1, sticky='ns', padx=5)
@@ -160,10 +162,13 @@ class Gameboard(tk.Frame):
             self.frame_camembert.pack()
             self.frame_pseudo = tk.Frame(self.frame_joueur, height=75, width = 295, bg=player.color)
             self.frame_pseudo.pack()
+            self.row_cheese = []
             #affichage des camemberts
             for i in range(len(self.controller.themes)):
                 self.frame_cam = tk.Frame(self.frame_camembert, borderwidth="1",relief="solid", height=75, width = 59)
                 self.frame_cam.grid(row=0, column=i+1)
+                self.row_cheese.append(self.frame_cam)
+            self.rows.append(self.row_cheese)
             #label pseudo
             fontStyle = tkfont.Font(family="Helvetica", size=20)
             self.label = tk.Label(self.frame_pseudo, text=player.name, bg=player.color, font=fontStyle)
@@ -284,6 +289,7 @@ class Gameboard(tk.Frame):
         self.ans_frame.grid(row=2, sticky="nesw")
         self.ans_frame.grid_columnconfigure(0, minsize=620)
         if len(answers) > 1:
+            random.shuffle(answers)
             for i, ans in enumerate(answers):
                 self.command = partial(self.ans_compare, (ans.label, answers))
                 self.button = tk.Button(self.ans_frame, text=ans.label, bg='white', relief='flat', command=self.command)
@@ -313,13 +319,36 @@ class Gameboard(tk.Frame):
         self.sucess = self.controller.game.rep_compare(ans[0], ans[1])
         if self.sucess == True:
             self.remove_question(self.question)
+            self.controller.game.active_player.score += 1
+            if self.question.level == 1:
+                self.controller.game.credit_cheese(self.controller.game.active_player, self.question)
+                self.update_cheese(self.controller.game.active_player)
+                self.check_cheese(self.controller.game.active_player)
         else:
             self.controller.game.active_player.turn = False
             self.controller.game.set_active_player()
+            self.controller.game.active_player.score = 0
         self.state(self.bouton)
         self.clean_qr(self.questions_frame)
         self.show_active_player()
         
+    # mise à jour graphique des camemberts
+    def update_cheese(self, player):
+        for i, theme in enumerate(player.valid):
+            player_row = self.controller.game.player_cnt
+            theme_color = [c.color for c in self.controller.themes if c.label == theme]
+            self.rows[player_row - 2][i].configure(bg=theme_color)
+
+    # regarde si il y a un vainqueur
+    def check_cheese(self, player):
+        if len(player.valid) == 5:
+            self.controller.game.game_end = True
+            self.end_game()
+
+    # fenetre de fin de partie
+    def end_game(self):
+        messagebox.showinfo(title='Fin de partie', message=f"{self.controller.game.active_player.name} vient de gagner la partie, félicitations !!")
+
     # nettoyage des frames questions / réponses
     def clean_qr(self, frame):
         for widget in frame.winfo_children():
