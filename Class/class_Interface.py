@@ -114,6 +114,7 @@ class PlayerSelection(tk.Frame):
         self.controller.game.player_creation(self.names_li)
         self.controller.game.set_cheese_score()
         self.controller.game.init_game_turn()
+        self.controller.frames['Gameboard'].show_active_player()
         self.controller.frames['Gameboard'].define_position()
         self.controller.frames['Gameboard'].player_board()
         self.controller.frames['Gameboard'].set_dice()
@@ -131,17 +132,21 @@ class Gameboard(tk.Frame):
         #frame qui contient le dé et l'affichage
         self.dice_frame1 = tk.Frame(self.player_frame, height=150, width=300)
         self.dice_frame1.grid(row=0, column=0, sticky='ns')
-        
+
         # zone qui regroupe deux autres frames (Plateau & Questions)
         self.game_frame = tk.Frame(self, height=650, width=1500)
         self.game_frame.grid(row=1)
+
         # frame qui contient le plateau de jeu
         self.gameboard_frame = tk.Frame(self.game_frame, height=650, width=880)
         self.gameboard_frame.grid(row=0, column=0, sticky='ns')
-
         # frame qui contient les questions et choix de réponses
         self.questions_frame = tk.Frame(self.game_frame, height=650, width=620)
         self.questions_frame.grid(row=0, column=1, sticky='ns')
+
+        # on fixe la taille mini des colonnes du .grid
+        self.game_frame.grid_columnconfigure(0, minsize=880)
+        self.game_frame.grid_columnconfigure(1, minsize=620)
 
         # création de la grille
         self.grid_cells = self.create_grid() 
@@ -163,6 +168,19 @@ class Gameboard(tk.Frame):
             fontStyle = tkfont.Font(family="Helvetica", size=20)
             self.label = tk.Label(self.frame_pseudo, text=player.name, bg=player.color, font=fontStyle)
             self.label.place(x=148, y=35, anchor='center')
+
+    # affichage du joueur actif
+    def show_active_player(self):
+        self.activ_frame = tk.Frame(self.questions_frame, width=620)
+        self.activ_frame.grid(row=0, sticky="nesw")
+        self.activ_frame.grid_columnconfigure(0, minsize=620)
+        self.change_active_player()
+
+    def change_active_player(self):
+        pname = self.controller.game.active_player.name
+        pcolor = self.controller.game.active_player.color
+        self.activ_lab = tk.Label(self.activ_frame, text=f'{pname} à toi de jouer !', font=('Helvetica', 15), bg='black', fg=pcolor)
+        self.activ_lab.grid(row=0, pady=25)
 
     # définir les positions initiales des joueurs
     def define_position(self):
@@ -195,11 +213,11 @@ class Gameboard(tk.Frame):
     # création du bouton du dé
     def set_dice(self):
         # création du bouton dé
-        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', height = 5, width = 15, bd=None, relief='flat', state='normal')
+        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé',font=('Helvetica', 16), height = 5, width = 15, bd=None, relief='flat', state='normal')
         self.bouton.configure(command=lambda: self.run_turn())
         self.bouton.grid(row=0, column=0)
         # affichage du score du dé
-        self.score = tk.Label(self.dice_frame1, text='', font=("Helvetica", 20), fg='black', height = 5, width = 10, bd=None)
+        self.score = tk.Label(self.dice_frame1, text='', font=("Helvetica", 20), fg='black', height = 5, width = 5, bd=None)
         self.score.grid(row=0, column=1)
 
     # fonction pour lancement du dé et avancement pion
@@ -213,7 +231,7 @@ class Gameboard(tk.Frame):
         self.position = self.controller.game.active_player.position
         self.theme = self.define_theme(self.position)
         self.question = self.controller.game.set_question(self.theme)
-        self.show_question(self.question)
+        self.show_question(self.question.theme, self.question.label, self.theme.color)
         self.answers = self.controller.game.get_question_answers(self.question.id)
         self.show_answers(self.answers)
 
@@ -247,23 +265,48 @@ class Gameboard(tk.Frame):
         self.score.configure(text=x)
 
     # créer frame question
-    def show_question(self, txt):
-        # Label de la question
-        self.lab = tk.Label(self.questions_frame, text=txt)
-        self.lab.grid(row=0)
+    def show_question(self, qtheme, qlabel, color):
+        label = self.check_label_size(qlabel)
+        # frame pour la question
+        self.lab_frame = tk.Frame(self.questions_frame, width=620)
+        self.lab_frame.grid(row=1, sticky="nesw")
+        self.lab_frame.grid_columnconfigure(0, minsize=620)
+        # affichage du thème
+        self.theme = tk.Label(self.lab_frame, text=qtheme, font=('Helvetica', 32), fg=color)
+        self.theme.grid(row=0, pady=25)
+        # affichage de l'intitulé de la question
+        self.label = tk.Label(self.lab_frame, text=label, font=('Helvetica', 16))
+        self.label.grid(row=1, pady=10)
 
     # créer frame des réponses
     def show_answers(self, answers):
+        self.ans_frame = tk.Frame(self.questions_frame, width=620)
+        self.ans_frame.grid(row=2, sticky="nesw")
+        self.ans_frame.grid_columnconfigure(0, minsize=620)
         if len(answers) > 1:
             for i, ans in enumerate(answers):
                 self.command = partial(self.ans_compare, (ans.label, answers))
-                self.button = tk.Button(self.questions_frame, text=ans.label, relief='flat', command=self.command)
-                self.button.grid(row=i+1)
+                self.button = tk.Button(self.ans_frame, text=ans.label, bg='white', relief='flat', command=self.command)
+                self.button.grid(row=i+1, pady=5)
         else:
-            self.input = tk.Entry(self.questions_frame)
-            self.input.grid(row=2)
-            self.validation = tk.Button(self.questions_frame, text='Valider', command=lambda: self.ans_compare((self.input.get(), answers)))
-            self.validation.grid(row=3)
+            self.input = tk.Entry(self.ans_frame)
+            self.input.grid(row=3, pady=10)
+            self.validation = tk.Button(self.ans_frame, text='Valider', command=lambda: self.ans_compare((self.input.get(), answers)))
+            self.validation.grid(row=4, pady=10)
+
+    # fonction pour check la longueur du label de la question
+    def check_label_size(self, label):
+        new_label = ''
+        if len(label) > 50:
+           new_label += label[0:50]
+           cut = label[50:60].find(' ')
+           cut += 50
+           new_label += label[50:cut]
+           new_label += '\n'
+           new_label += label[cut:]
+        else : 
+            new_label = label
+        return new_label
 
     # fonction pour comparer la réponse
     def ans_compare(self, ans):
@@ -275,6 +318,7 @@ class Gameboard(tk.Frame):
             self.controller.game.set_active_player()
         self.state(self.bouton)
         self.clean_qr(self.questions_frame)
+        self.show_active_player()
         
     # nettoyage des frames questions / réponses
     def clean_qr(self, frame):
