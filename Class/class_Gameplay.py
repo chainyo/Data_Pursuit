@@ -2,7 +2,6 @@ from Class.class_Player import Player
 from Class.class_Bdd import Bdd
 import random
 
-
 class Gameplay:
 
     def __init__(self, liquestions, lithemes):
@@ -34,27 +33,6 @@ class Gameplay:
         # donner le score actuel de tous les joueurs
         for player in self.players.values():
             print(player)
-
-    # def game_turn(self):
-    #        asked_question = self.ask_question()
-            # si la réponse est fausse le tour du joueur se termine
-    #        if asked_question[0] == False:
-    #            active_player.turn = False
-    #        elif asked_question[0] == True and asked_question[1] == 2:
-    #            if active_player.cheese[asked_question[2]] == False:
-    #                self.credit_cheese(active_player, asked_question)
-    #                active_player.score += 1
-            # sinon on ajoute 1 point à son score
-    #        else:
-    #            active_player.score += 1
-            # affichage du score actuel du joueur
-    #        active_player.give_score()
-        # affichage de la fin du tour
-    #    print(f"Fin du tour n°{self.turn_cnt}")
-        # affichage du scores de tous les joueurs à la fin du tour
-    #    self.give_scores()
-        # lancement du tour suivant
-    #    self.game_turn()
 
     def init_game_turn(self):
         # check si le jeu n'est pas terminé
