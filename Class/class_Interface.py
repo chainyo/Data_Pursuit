@@ -336,10 +336,6 @@ class Gameboard(tk.Frame):
         else:
             button["state"] = 'disabled'
 
-    def affiche_rep(self):
-        label_reponse = tk.Label(self.game_frame, text="f{self.controller.game.ask_questions.reponses}", font=("Helvetica", 20), bg='orange', fg='white', height=5, width=10, bd=None)
-        label_reponse.grid()
-
 class LoadGame(tk.Frame):
 
     def __init__(self, parent, controller):
