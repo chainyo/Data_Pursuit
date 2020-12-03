@@ -80,7 +80,11 @@ INSERT INTO `questions` (`id_question`, `libelle_question`, `id_theme`, `difficu
 (423, 'Le coefficient directeur peut-il indiquer l\'évolution d\'une droite ',5,1),
 (424,'En statistique, un outlier est une valeur ',5,1),
 (425,'La valeur sigma d\'une Loi Normale correspond à ',5,1),
-(426,'Laquelle de ces propositions présente une forte relation entre x et y ',5,3);
+(426,'Laquelle de ces propositions présente une forte relation entre x et y ',5,3),
+(427,'L\'erreur quadratique moyenne est la racine de ',5,3),
+(428,'La somme des carrés des résidus n\'est pas un indicateur de comparaison de 2 séries de valeurs',5,3),
+(429,'La variance est une mesure du degré de dispersion d\'un ensemble de données',5,2),
+(430,'L\'équation (ih/2 π) d l Ψ>/dt = Hl Ψ> peut-elle être résolue par Paul ?',5,1);
 
 -- --------------------------------------------------------
 
@@ -155,7 +159,16 @@ INSERT INTO `reponses` (`id_reponse`, `id_question`, `libelle_reponse`, `valeur_
 (453, 425,'La moyenne',0),
 (454, 426,'Corrélation = 0.9',1),
 (455, 426,'P-value = 1',0),
-(456, 426,'La réponse D',0);
+(456, 426,'La réponse D',0),
+(457,427,'la MSE'),
+(458,427,'la EAM'),
+(459,427,'la THOMAS'),
+(460,428,'Vrai',0),
+(461,428,'Faux',1),
+(462,429,'Vrai',1),
+(463,429,'Faux',0),
+(464,430,'Vrai',1),
+(465,430,'Faux',0);
 
 -- --------------------------------------------------------
 
