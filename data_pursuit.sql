@@ -76,7 +76,7 @@ INSERT INTO `questions` (`id_question`, `libelle_question`, `id_theme`, `difficu
 (419, 'Il n\'y a aucune corrélation entre 2 variables lorsque le rapport est de -1', 5, 2),
 (420, 'Quelle est la célèbre épreuve utiliser dans la loi binomiale de notation n', 5, 3),
 (421, 'Une courbe polynomiale indique que plusieurs variables existent dans notre dataset', 5, 2),
-(422, 'Pour f(x) = 2x² + 4x + 5, la courbe passerait l\'origine à quelle ordonée ?'5, 2),
+(422, 'Pour f(x) = 2x² + 4x + 5, la courbe passerait l\'origine à quelle ordonée ?',5, 2),
 (423, 'Le coefficient directeur peut-il indiquer l\'évolution d\'une droite ',5,1),
 (424,'En statistique, un outlier est une valeur ',5,1),
 (425,'La valeur sigma d\'une Loi Normale correspond à ',5,1),
