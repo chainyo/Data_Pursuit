@@ -65,23 +65,20 @@ class Gameplay:
             increment -= 1
 
     def set_question(self, theme):
-        # niveau de question random
-        level = self.random_level()
+        # niveau de question en fonction score du joueur
+        if self.active_player.score < 2:
+            level = 1
+        elif self.active_player.score > 2:
+            level = 2
         # question random en fonction du niveau
         self.question = self.random_question(0, theme)
         return self.question
 
     # fonction pour créditer un camembert à un joueur
     def credit_cheese(self, player, question):
-        player.cheese[question[2]] = True
+        player.cheese[question.theme] = True
         player.cheese['cheese_cnt'] += 1
         player.add_valid()
-        player.valid_theme_formatting(player.valid)
-
-    # fonction random question level 
-    def random_level(self):
-        x = random.randrange(0, 3)
-        return x
 
     # fonction random question
     def random_question(self, lvl, theme):
@@ -118,7 +115,3 @@ class Gameplay:
                     return True
                 else:
                     pass
-            else:
-                return False
-
-
