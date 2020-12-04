@@ -2,6 +2,7 @@ from Class.class_Player import Player
 from Class.class_Bdd import Bdd
 import random
 
+
 class Gameplay:
 
     def __init__(self, liquestions, lithemes):
@@ -10,7 +11,7 @@ class Gameplay:
         self.themes = lithemes  # récupération des différents thèmes
         self.game_end = False  # permet de continuer le jeu tant que cette variable n'est pas True
         self.turn_cnt = 0  # compteur de tour de jeu
-        self.player_cnt = 1 # compteur pour suivre le tour des joueurs
+        self.player_cnt = 1  # compteur pour suivre le tour des joueurs
 
     def choose_nb_player(self, num):
         # définir un nombre de joueur
@@ -39,7 +40,7 @@ class Gameplay:
         if self.game_end != True:
             self.turn_cnt += 1
         self.set_active_player()
-        
+
     def set_active_player(self):
         if self.player_cnt <= len(self.players):
             self.active_player = self.players[self.player_cnt]
