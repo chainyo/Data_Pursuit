@@ -56,7 +56,7 @@ CREATE TABLE `questions` (
 
 INSERT INTO `questions` (`id_question`, `libelle_question`, `id_theme`, `difficulte_question`) VALUES
 (2, 'Quel est le "poids" du big data en 2020', 1, 2),
-(3, 'Le volume de données des entreprots se doublent tous les ... ans(s)', 1, 2),
+(3, 'Le volume de données des entreprots se doublent tous les ... an(s)', 1, 2),
 (4, 'Lequel de ces emplacements serait le plus adapté pour stocker un grand jeu de données', 1, 2),
 (5, 'En 2020, par combien le volume de données numériques créés a-t-il été multiplié par rapport à 2010', 1, 2),
 (6, 'Par combien sera multiplier le volume du big data en 2035 par rapport a 2020', 1, 3),
