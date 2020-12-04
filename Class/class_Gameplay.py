@@ -64,14 +64,17 @@ class Gameplay:
                 self.active_player.position = (x - 1, y)
             increment -= 1
 
-    def set_question(self, theme):
+    def set_question(self, theme, cheese_position):
         # niveau de question en fonction score du joueur
-        if self.active_player.score < 2:
-            level = 0
-        elif self.active_player.score > 2:
-            level = 1
+        if self.active_player.position in cheese_position:
+            level = 2
+        else:
+            if self.active_player.score < 2:
+                level = 0
+            elif self.active_player.score > 2:
+                level = 1
         # question random en fonction du niveau
-        self.question = self.random_question(0, theme)
+        self.question = self.random_question(level, theme)
         return self.question
 
     # fonction pour créditer un camembert à un joueur
