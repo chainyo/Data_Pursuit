@@ -28,6 +28,7 @@ class App(tk.Tk):
         self.themes = Bdd.get_theme(colors)
         # création de la partie
         self.game = Gameplay(self.questions, self.themes)
+        self.img = tk.PhotoImage(file='/home/thomasc/Desktop/Microsoft_IA/Data_Pursuit/Class/cheese.png')
 
         container = tk.Frame(self)
         container.pack(side="top", fil="both", expand=True)
@@ -153,12 +154,7 @@ class Gameboard(tk.Frame):
 
         # création de la grille
         self.grid_cells = self.create_grid() 
-        for cheese in cheese_position:
-            #cheese = tk.PhotoImage(file='./cheese.png')
-            logo = ImageTk.PhotoImage(Image.open('./cheese.png'))
-            logo_label = tk.Label(self.full_grid[cheese[0]][cheese[1]], bd = 0, image=logo)
-            logo_label.image= logo
-            logo_label.pack()
+        self.add_grid_cheese()
     
     #Affiche les joueurs dans la Frame Playerframe
     def player_board(self):
@@ -243,7 +239,7 @@ class Gameboard(tk.Frame):
         self.create_lab(self.controller.game.active_player)
         self.position = self.controller.game.active_player.position
         self.theme = self.define_theme(self.position)
-        self.question = self.controller.game.set_question(self.theme)
+        self.question = self.controller.game.set_question(self.theme, cheese_position)
         self.show_question(self.question.theme, self.question.label, self.theme.color)
         self.answers = self.controller.game.get_question_answers(self.question.id)
         self.show_answers(self.answers)
@@ -271,6 +267,12 @@ class Gameboard(tk.Frame):
                     color_cnt = 0
             self.full_grid.append(row)
         return self.full_grid
+
+    # fonction pour ajouter des fromages sur la grille
+    def add_grid_cheese(self):
+        for cheese in cheese_position:
+            logo = tk.Label(self.full_grid[cheese[0]][cheese[1]], image=self.controller.img, relief='flat', bd = 0, borderwidth=0, highlightthickness=0, bg=self.full_grid[cheese[0]][cheese[1]]['bg'])
+            logo.pack()
 
     # fonction pour lancer le dé
     def roll(self):
@@ -328,7 +330,7 @@ class Gameboard(tk.Frame):
         if self.sucess == True:
             self.remove_question(self.question)
             self.controller.game.active_player.score += 1
-            if self.question.level == 1:
+            if self.question.level == 3:
                 self.controller.game.credit_cheese(self.controller.game.active_player, self.question)
                 self.update_cheese(self.controller.game.active_player)
                 self.check_cheese(self.controller.game.active_player)
