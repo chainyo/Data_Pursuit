@@ -6,9 +6,10 @@ import random
 from functools import partial
 from Class.class_Bdd import Bdd
 from Class.class_Gameplay import Gameplay
+from PIL import ImageTk,Image
 
 colors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
-
+cheese_position = [(0,8), (10,4), (5,0), (2,10), (8,0), (5,10), (0,6), (10,2), (0,2), (10,8)]
 
 class App(tk.Tk):
 
@@ -20,13 +21,16 @@ class App(tk.Tk):
 
         self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
-        # stockage des données
+         # stockage des données
         questions_1, questions_2, questions_3 = Bdd.get_question_1(), Bdd.get_question_2(), Bdd.get_question_3()
         self.questions = (questions_1, questions_2, questions_3)
         # stockage des différents thèmes et de leurs couleurs
         self.themes = Bdd.get_theme(colors)
         # création de la partie
         self.game = Gameplay(self.questions, self.themes)
+
+        # création des images
+        self.img = tk.PhotoImage(file='/home/thomasc/Desktop/Microsoft_IA/Data_Pursuit/Class/cheese.png')
 
         container = tk.Frame(self)
         container.pack(side="top", fil="both", expand=True)
@@ -45,7 +49,6 @@ class App(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
-
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -59,7 +62,6 @@ class StartPage(tk.Frame):
         button_load = tk.Button(self, text="Load Game", command=lambda: controller.show_frame("LoadGame"))
         button_new.pack()
         button_load.pack()
-
 
 class PlayerSelection(tk.Frame):
 
@@ -88,8 +90,7 @@ class PlayerSelection(tk.Frame):
         button_back = tk.Button(self, text="Back", command=lambda: controller.show_frame("StartPage"))
         button_back.pack()
         # bouton pour lancer la partie
-        button_launch = tk.Button(self, text="Launch Game",
-                                  command=lambda: [controller.show_frame("Gameboard"), self.launch_game()])
+        button_launch = tk.Button(self, text="Launch Game", command=lambda: [controller.show_frame("Gameboard"), self.launch_game()])
         button_launch.pack()
 
     # fonction callback permettant de mettre à jour l'affichage via le choix sur le menu déroulant 
@@ -124,7 +125,6 @@ class PlayerSelection(tk.Frame):
         self.controller.frames['Gameboard'].player_board()
         self.controller.frames['Gameboard'].set_dice()
 
-
 class Gameboard(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -135,7 +135,7 @@ class Gameboard(tk.Frame):
         # zone pour l'affichage des joueurs et de leurs camemberts
         self.player_frame = tk.Frame(self, height=150, width=1500)
         self.player_frame.grid(row=0)
-        # frame qui contient le dé et l'affichage
+        #frame qui contient le dé et l'affichage
         self.dice_frame1 = tk.Frame(self.player_frame, height=150, width=300)
         self.dice_frame1.grid(row=0, column=0, sticky='ns')
 
@@ -155,27 +155,27 @@ class Gameboard(tk.Frame):
         self.game_frame.grid_columnconfigure(1, minsize=620)
 
         # création de la grille
-        self.grid_cells = self.create_grid()
-
-        # Affiche les joueurs dans la Frame Playerframe
-
+        self.grid_cells = self.create_grid() 
+        self.add_grid_cheese()
+    
+    #Affiche les joueurs dans la Frame Playerframe
     def player_board(self):
         self.rows = []
         for i, player in enumerate(self.controller.game.players.values()):
             self.frame_joueur = tk.Frame(self.player_frame, height=150, width=295, bg=player.color)
-            self.frame_joueur.grid(row=0, column=i + 1, sticky='ns', padx=5)
-            self.frame_camembert = tk.Frame(self.frame_joueur, height=75, width=295)
+            self.frame_joueur.grid(row=0, column=i+1, sticky='ns', padx=5)
+            self.frame_camembert = tk.Frame(self.frame_joueur, height=75, width = 295)
             self.frame_camembert.pack()
-            self.frame_pseudo = tk.Frame(self.frame_joueur, height=75, width=295, bg=player.color)
+            self.frame_pseudo = tk.Frame(self.frame_joueur, height=75, width = 295, bg=player.color)
             self.frame_pseudo.pack()
             self.row_cheese = []
-            # affichage des camemberts
+            #affichage des camemberts
             for i in range(len(self.controller.themes)):
-                self.frame_cam = tk.Frame(self.frame_camembert, borderwidth="1", relief="solid", height=75, width=59)
-                self.frame_cam.grid(row=0, column=i + 1)
+                self.frame_cam = tk.Frame(self.frame_camembert, borderwidth="1",relief="solid", height=75, width = 59)
+                self.frame_cam.grid(row=0, column=i+1)
                 self.row_cheese.append(self.frame_cam)
             self.rows.append(self.row_cheese)
-            # label pseudo
+            #label pseudo
             fontStyle = tkfont.Font(family="Helvetica", size=20)
             self.label = tk.Label(self.frame_pseudo, text=player.name, bg=player.color, font=fontStyle)
             self.label.place(x=148, y=35, anchor='center')
@@ -190,8 +190,7 @@ class Gameboard(tk.Frame):
     def change_active_player(self):
         pname = self.controller.game.active_player.name
         pcolor = self.controller.game.active_player.color
-        self.activ_lab = tk.Label(self.activ_frame, text=f'{pname} à toi de jouer !', font=('Helvetica', 15),
-                                  bg='black', fg=pcolor)
+        self.activ_lab = tk.Label(self.activ_frame, text=f'{pname} à toi de jouer !', font=('Helvetica', 15), bg='black', fg=pcolor)
         self.activ_lab.grid(row=0, pady=25)
 
     # définir les positions initiales des joueurs
@@ -213,8 +212,7 @@ class Gameboard(tk.Frame):
 
     # fonction pour la création d'un pion pour un joueur
     def create_lab(self, player):
-        player.lab = tk.Label(self.grid_cells[player.position[0]][player.position[1]], text=player.name,
-                              bg=player.color)
+        player.lab = tk.Label(self.grid_cells[player.position[0]][player.position[1]], text=player.name, bg=player.color)
         player.lab.place(x=40, y=30, anchor='center')
 
     # fonction pour nettoyer la frame d'un emplacement passé d'un joueur
@@ -222,29 +220,27 @@ class Gameboard(tk.Frame):
         for widget in self.grid_cells[player.position[0]][player.position[1]].winfo_children():
             if widget == player.lab:
                 widget.destroy()
-
+                
     # création du bouton du dé
     def set_dice(self):
         # création du bouton dé
-        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé', font=('Helvetica', 16), height=5, width=15,
-                                bd=None, relief='flat', state='normal')
+        self.bouton = tk.Button(self.dice_frame1, text='Lancer le dé',font=('Helvetica', 16), height = 5, width = 15, bd=None, relief='flat', state='normal')
         self.bouton.configure(command=lambda: self.run_turn())
         self.bouton.grid(row=0, column=0)
         # affichage du score du dé
-        self.score = tk.Label(self.dice_frame1, text='', font=("Helvetica", 20), fg='black', height=5, width=5, bd=None)
+        self.score = tk.Label(self.dice_frame1, text='', font=("Helvetica", 20), fg='black', height = 5, width = 5, bd=None)
         self.score.grid(row=0, column=1)
 
     # fonction pour lancement du dé et avancement pion
     def run_turn(self):
         self.state(self.bouton)
-        self.roll()
-        self.result = int(self.score.cget("text"))
+        self.result = self.roll()
         self.clean_frame(self.controller.game.active_player)
         self.controller.game.move_player(self.result)
         self.create_lab(self.controller.game.active_player)
         self.position = self.controller.game.active_player.position
         self.theme = self.define_theme(self.position)
-        self.question = self.controller.game.set_question(self.theme)
+        self.question = self.controller.game.set_question(self.theme, cheese_position)
         self.show_question(self.question.theme, self.question.label, self.theme.color)
         self.answers = self.controller.game.get_question_answers(self.question.id)
         self.show_answers(self.answers)
@@ -273,10 +269,17 @@ class Gameboard(tk.Frame):
             self.full_grid.append(row)
         return self.full_grid
 
+    # fonction pour ajouter des fromages sur la grille
+    def add_grid_cheese(self):
+        for cheese in cheese_position:
+            logo = tk.Label(self.full_grid[cheese[0]][cheese[1]], image=self.controller.img, relief='flat', bd = 0, borderwidth=0, highlightthickness=0, bg=self.full_grid[cheese[0]][cheese[1]]['bg'])
+            logo.pack()
+
     # fonction pour lancer le dé
     def roll(self):
         x = random.randint(1, 6)
         self.score.configure(text=x)
+        return x
 
     # créer frame question
     def show_question(self, qtheme, qlabel, color):
@@ -302,25 +305,38 @@ class Gameboard(tk.Frame):
             for i, ans in enumerate(answers):
                 self.command = partial(self.ans_compare, (ans.label, answers))
                 self.button = tk.Button(self.ans_frame, text=ans.label, bg='white', relief='flat', command=self.command)
-                self.button.grid(row=i + 1, pady=5)
+                self.button.grid(row=i+1, pady=5)
         else:
             self.input = tk.Entry(self.ans_frame)
             self.input.grid(row=3, pady=10)
-            self.validation = tk.Button(self.ans_frame, text='Valider',
-                                        command=lambda: self.ans_compare((self.input.get(), answers)))
+            self.validation = tk.Button(self.ans_frame, text='Valider', command=lambda: self.ans_compare((self.input.get(), answers)))
             self.validation.grid(row=4, pady=10)
 
     # fonction pour check la longueur du label de la question
     def check_label_size(self, label):
         new_label = ''
-        if len(label) > 50:
+        if len(label) > 50 and len(label) < 100:
+           new_label += label[0:50]
+           cut = label[50:60].find(' ')
+           cut += 50
+           new_label += label[50:cut]
+           new_label += '\n'
+           new_label += label[cut:]
+        elif len(label) > 100 and len(label) < 200:
+            # de 0 à 50 caractères
             new_label += label[0:50]
             cut = label[50:60].find(' ')
             cut += 50
             new_label += label[50:cut]
             new_label += '\n'
-            new_label += label[cut:]
-        else:
+            # de 50 à 100 caractères
+            new_label += label[cut:100]
+            cut2 = label[100:110].find(' ')
+            cut2 += 100
+            new_label += label[100:cut2]
+            new_label += '\n'
+            new_label += label[cut2:]
+        else : 
             new_label = label
         return new_label
 
@@ -330,7 +346,7 @@ class Gameboard(tk.Frame):
         if self.sucess == True:
             self.remove_question(self.question)
             self.controller.game.active_player.score += 1
-            if self.question.level == 1:
+            if self.question.level == 3:
                 self.controller.game.credit_cheese(self.controller.game.active_player, self.question)
                 self.update_cheese(self.controller.game.active_player)
                 self.check_cheese(self.controller.game.active_player)
@@ -341,7 +357,7 @@ class Gameboard(tk.Frame):
         self.state(self.bouton)
         self.clean_qr(self.questions_frame)
         self.show_active_player()
-
+        
     # mise à jour graphique des camemberts
     def update_cheese(self, player):
         for i, theme in enumerate(player.valid):
@@ -357,8 +373,7 @@ class Gameboard(tk.Frame):
 
     # fenetre de fin de partie
     def end_game(self):
-        messagebox.showinfo(title='Fin de partie',
-                            message=f"{self.controller.game.active_player.name} vient de gagner la partie, félicitations !!")
+        messagebox.showinfo(title='Fin de partie', message=f"{self.controller.game.active_player.name} vient de gagner la partie, félicitations !!")
 
     # nettoyage des frames questions / réponses
     def clean_qr(self, frame):
@@ -375,7 +390,6 @@ class Gameboard(tk.Frame):
             button["state"] = 'normal'
         else:
             button["state"] = 'disabled'
-
 
 class LoadGame(tk.Frame):
 
