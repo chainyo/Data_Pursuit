@@ -56,7 +56,7 @@ CREATE TABLE `questions` (
 
 INSERT INTO `questions` (`id_question`, `libelle_question`, `id_theme`, `difficulte_question`) VALUES
 (2, 'Quel est le "poids" du big data en 2020', 1, 2),
-(3, 'Le volume de données des entreprots se doublent tous les ... ans(s)', 1, 2),
+(3, 'Le volume de données des entreprots se doublent tous les ... an(s)', 1, 2),
 (4, 'Lequel de ces emplacements serait le plus adapté pour stocker un grand jeu de données', 1, 2),
 (5, 'En 2020, par combien le volume de données numériques créés a-t-il été multiplié par rapport à 2010', 1, 2),
 (6, 'Par combien sera multiplier le volume du big data en 2035 par rapport a 2020', 1, 3),
@@ -163,7 +163,7 @@ INSERT INTO `questions` (`id_question`, `libelle_question`, `id_theme`, `difficu
 (427, 'L\'erreur quadratique moyenne est la racine de ', 5, 3),
 (428, 'La somme des carrés des résidus n\'est pas un indicateur de comparaison de 2 séries de valeurs', 5, 3),
 (429, 'La variance est une mesure du degré de dispersion d\'un ensemble de données', 5, 2),
-(430, 'L\'équation (ih/2 π) d l Ψ>/dt = Hl Ψ> peut-elle être résolue par Paul', 5, 1);
+(430, 'L\'équation (ih/2 π) d l Ψ>/dt = Hl Ψ> peut-elle être résolue par Paul', 5, 3);
 
 -- --------------------------------------------------------
 
