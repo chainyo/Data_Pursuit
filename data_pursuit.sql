@@ -73,7 +73,18 @@ INSERT INTO `questions` (`id_question`, `libelle_question`, `id_theme`, `difficu
 (416, 'Le calcul matriciel de structure (2,3)*(2,3) est-il possible', 5, 2),
 (417, 'En tirant une carte au hasard dans un jeu de 32 cartes, la probabilité d\'obtenir une Reine rouge est', 5, 1),
 (418, 'Quel test de corrélation doit-on utiliser quand nos variables suivent une loi normale', 5, 2),
-(419, 'Il n\'y a aucune corrélation entre 2 variables lorsque le rapport est de -1', 5, 2);
+(419, 'Il n\'y a aucune corrélation entre 2 variables lorsque le rapport est de -1', 5, 2),
+(420, 'Quelle est la célèbre épreuve utiliser dans la loi binomiale de notation n', 5, 3),
+(421, 'Une courbe polynomiale indique que plusieurs variables existent dans notre dataset', 5, 2),
+(422, 'Pour f(x) = 2x² + 4x + 5, la courbe passerait l\'origine à quelle ordonée ?',5, 2),
+(423, 'Le coefficient directeur peut-il indiquer l\'évolution d\'une droite ',5,1),
+(424,'En statistique, un outlier est une valeur ',5,1),
+(425,'La valeur sigma d\'une Loi Normale correspond à ',5,1),
+(426,'Laquelle de ces propositions présente une forte relation entre x et y ',5,3),
+(427,'L\'erreur quadratique moyenne est la racine de ',5,3),
+(428,'La somme des carrés des résidus n\'est pas un indicateur de comparaison de 2 séries de valeurs',5,3),
+(429,'La variance est une mesure du degré de dispersion d\'un ensemble de données',5,2),
+(430,'L\'équation (ih/2 π) d l Ψ>/dt = Hl Ψ> peut-elle être résolue par Paul ?',5,3);
 
 -- --------------------------------------------------------
 
@@ -133,7 +144,31 @@ INSERT INTO `reponses` (`id_reponse`, `id_question`, `libelle_reponse`, `valeur_
 (438, 418, 'Pearson', 1),
 (439, 418, 'Spearman', 0),
 (440, 419, 'Vrai', 0),
-(441, 419, 'Faux', 1);
+(441, 419, 'Faux', 1),
+(442, 420,'Bernoulli', 1),
+(443, 421,'Vrai',0),
+(444, 421,'Faux',1),
+(445, 422,'5',1),
+(446, 423,'Vrai',1),
+(447, 423,'Faux',0),
+(448, 424,'Abérrante',1),
+(449, 424,'Absente',0),
+(450, 424,'Fréquente',0),
+(451, 425,'La variance',0),
+(452, 425,'L\'écart-type',1),
+(453, 425,'La moyenne',0),
+(454, 426,'Corrélation = 0.9',1),
+(455, 426,'P-value = 1',0),
+(456, 426,'La réponse D',0),
+(457,427,'la MSE',1),
+(458,427,'la EAM',0),
+(459,427,'la THOMAS',0),
+(460,428,'Vrai',0),
+(461,428,'Faux',1),
+(462,429,'Vrai',1),
+(463,429,'Faux',0),
+(464,430,'Vrai',1),
+(465,430,'Faux',0);
 
 -- --------------------------------------------------------
 
