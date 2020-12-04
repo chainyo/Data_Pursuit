@@ -7,6 +7,7 @@ from functools import partial
 from Class.class_Bdd import Bdd
 from Class.class_Gameplay import Gameplay
 from PIL import ImageTk,Image
+import textwrap
 
 colors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
 cheese_position = [(0,8), (10,4), (5,0), (2,10), (8,0), (5,10), (0,6), (10,2), (0,2), (10,8)]
@@ -314,30 +315,7 @@ class Gameboard(tk.Frame):
 
     # fonction pour check la longueur du label de la question
     def check_label_size(self, label):
-        new_label = ''
-        if len(label) > 50 and len(label) < 100:
-           new_label += label[0:50]
-           cut = label[50:60].find(' ')
-           cut += 50
-           new_label += label[50:cut]
-           new_label += '\n'
-           new_label += label[cut:]
-        elif len(label) > 100 and len(label) < 200:
-            # de 0 à 50 caractères
-            new_label += label[0:50]
-            cut = label[50:60].find(' ')
-            cut += 50
-            new_label += label[50:cut]
-            new_label += '\n'
-            # de 50 à 100 caractères
-            new_label += label[cut:100]
-            cut2 = label[100:110].find(' ')
-            cut2 += 100
-            new_label += label[100:cut2]
-            new_label += '\n'
-            new_label += label[cut2:]
-        else : 
-            new_label = label
+        new_label = textwrap.fill(label, width=50)
         return new_label
 
     # fonction pour comparer la réponse
