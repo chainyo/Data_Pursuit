@@ -55,8 +55,7 @@ CREATE TABLE `questions` (
 --
 
 INSERT INTO `questions` (`id_question`, `libelle_question`, `id_theme`, `difficulte_question`) VALUES
-(1, 'Quels sont les \"trois V\" du Big Data', 1, 1),
-(2, '110 zetaoctet de données', 1, 2),
+(2, 'Quel est le "poids" du big data en 2020', 1, 2),
 (3, 'Le volume de données des entreprots se doublent tous les ... ans(s)', 1, 2),
 (4, 'Lequel de ces emplacements serait le plus adapté pour stocker un grand jeu de données', 1, 2),
 (5, 'En 2020, par combien le volume de données numériques créés a-t-il été multiplié par rapport à 2010', 1, 2),
@@ -184,7 +183,6 @@ CREATE TABLE `reponses` (
 --
 
 INSERT INTO `reponses` (`id_reponse`, `id_question`, `libelle_reponse`, `valeur_reponse`) VALUES
-(19, 1, 'Volume, Vitesse, Variété', 1),
 (20, 2, '610 zetaoctet de données', 1),
 (23, 5, '24', 1),
 (24, 6, '45', 1),
@@ -304,7 +302,7 @@ INSERT INTO `reponses` (`id_reponse`, `id_question`, `libelle_reponse`, `valeur_
 (201, 201, 'Stop Killer Robots', 1),
 (202, 202, 'Biais', 1),
 (203, 203, 'Tay', 1),
-(204, 204, 'Deep Fakes', 1),
+(204, 204, 'Deep Fake', 1),
 (205, 205, 'Wargame', 1),
 (206, 206, 'Vrai', 1),
 (207, 206, 'Faux', 0),
