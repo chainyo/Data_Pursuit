@@ -302,7 +302,7 @@ class Gameboard(tk.Frame):
         self.theme = tk.Label(self.lab_frame, text=qtheme, font=('Helvetica', 32), fg=color)
         self.theme.grid(row=0, pady=25)
         # affichage de l'intitulé de la question
-        self.label = tk.Label(self.lab_frame, text=label, font=('Helvetica', 16))
+        self.label = tk.Label(self.lab_frame, text=f"{label} ?", font=('Helvetica', 16))
         self.label.grid(row=1, pady=10)
 
     # créer frame des réponses
