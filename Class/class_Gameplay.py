@@ -71,7 +71,7 @@ class Gameplay:
         else:
             if self.active_player.score < 2:
                 level = 0
-            elif self.active_player.score > 2:
+            elif self.active_player.score >= 2:
                 level = 1
         # question random en fonction du niveau
         self.question = self.random_question(level, theme)
