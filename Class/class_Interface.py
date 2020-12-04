@@ -28,6 +28,8 @@ class App(tk.Tk):
         self.themes = Bdd.get_theme(colors)
         # création de la partie
         self.game = Gameplay(self.questions, self.themes)
+
+        # création des images
         self.img = tk.PhotoImage(file='/home/thomasc/Desktop/Microsoft_IA/Data_Pursuit/Class/cheese.png')
 
         container = tk.Frame(self)
@@ -232,8 +234,7 @@ class Gameboard(tk.Frame):
     # fonction pour lancement du dé et avancement pion
     def run_turn(self):
         self.state(self.bouton)
-        self.roll()
-        self.result = int(self.score.cget("text"))
+        self.result = self.roll()
         self.clean_frame(self.controller.game.active_player)
         self.controller.game.move_player(self.result)
         self.create_lab(self.controller.game.active_player)
@@ -278,6 +279,7 @@ class Gameboard(tk.Frame):
     def roll(self):
         x = random.randint(1, 6)
         self.score.configure(text=x)
+        return x
 
     # créer frame question
     def show_question(self, qtheme, qlabel, color):
@@ -313,13 +315,27 @@ class Gameboard(tk.Frame):
     # fonction pour check la longueur du label de la question
     def check_label_size(self, label):
         new_label = ''
-        if len(label) > 50:
+        if len(label) > 50 and len(label) < 100:
            new_label += label[0:50]
            cut = label[50:60].find(' ')
            cut += 50
            new_label += label[50:cut]
            new_label += '\n'
            new_label += label[cut:]
+        elif len(label) > 100 and len(label) < 200:
+            # de 0 à 50 caractères
+            new_label += label[0:50]
+            cut = label[50:60].find(' ')
+            cut += 50
+            new_label += label[50:cut]
+            new_label += '\n'
+            # de 50 à 100 caractères
+            new_label += label[cut:100]
+            cut2 = label[100:110].find(' ')
+            cut2 += 100
+            new_label += label[100:cut2]
+            new_label += '\n'
+            new_label += label[cut2:]
         else : 
             new_label = label
         return new_label
