@@ -32,7 +32,7 @@ class App(tk.Tk):
         self.game = Gameplay(self.questions, self.themes)
 
         # création des images
-        self.img = tk.PhotoImage(file='/home/thomasc/Desktop/Microsoft_IA/Data_Pursuit/Class/cheese.png')
+        self.img = tk.PhotoImage(file='Class/cheese.png')
 
         container = tk.Frame(self)
         container.pack(side="top", fil="both", expand=True)
