@@ -84,7 +84,7 @@ INSERT INTO `questions` (`id_question`, `libelle_question`, `id_theme`, `difficu
 (427,'L\'erreur quadratique moyenne est la racine de ',5,3),
 (428,'La somme des carrés des résidus n\'est pas un indicateur de comparaison de 2 séries de valeurs',5,3),
 (429,'La variance est une mesure du degré de dispersion d\'un ensemble de données',5,2),
-(430,'L\'équation (ih/2 π) d l Ψ>/dt = Hl Ψ> peut-elle être résolue par Paul ?',5,1);
+(430,'L\'équation (ih/2 π) d l Ψ>/dt = Hl Ψ> peut-elle être résolue par Paul ?',5,3);
 
 -- --------------------------------------------------------
 
