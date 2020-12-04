@@ -6,8 +6,10 @@ import random
 from functools import partial
 from Class.class_Bdd import Bdd
 from Class.class_Gameplay import Gameplay
+from PIL import ImageTk,Image
 
 colors = ['#e76f51', '#f4a261', '#e9c46a', '#2a9d8f', '#264653']
+cheese_position = [(0,8), (10,4), (5,0), (2,10), (8,0), (5,10), (0,6), (10,2), (0,2), (10,8)]
 
 class App(tk.Tk):
 
@@ -151,6 +153,12 @@ class Gameboard(tk.Frame):
 
         # création de la grille
         self.grid_cells = self.create_grid() 
+        for cheese in cheese_position:
+            #cheese = tk.PhotoImage(file='./cheese.png')
+            logo = ImageTk.PhotoImage(Image.open('./cheese.png'))
+            logo_label = tk.Label(self.full_grid[cheese[0]][cheese[1]], bd = 0, image=logo)
+            logo_label.image= logo
+            logo_label.pack()
     
     #Affiche les joueurs dans la Frame Playerframe
     def player_board(self):
